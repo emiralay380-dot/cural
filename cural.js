@@ -123,19 +123,38 @@
     '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}.cu-foot{justify-content:center}}';
 
   /* ---------- URUN SAYFASI SKIN (Ikas DOM'u Slawn'a giydirir) ---------- */
+  // Ikas OZY temasi container'lara INLINE siyah bg + beyaz yazi basiyor
+  // (style="background-color: rgb(0, 0, 0)" / "#000000ff" / color:#ffffff).
+  // Inline style sadece !important + attribute-selector ile ezilir.
   var SKIN_CSS =
-    'html.cural-skin,html.cural-skin body{background:#fff!important;color:#0a0a0a!important}' +
-    'html.cural-skin .product-name,html.cural-skin .product-name-main{' +
-      'font-family:"Courier New",ui-monospace,monospace!important;letter-spacing:.04em!important;text-transform:uppercase!important;font-weight:700!important}' +
+    /* tum zemin beyaz: kok + ana sarmalayicilar + inline-siyah div'ler (sepet butonu haric) */
+    'html.cural-skin,html.cural-skin body,html.cural-skin #__next,' +
+    'html.cural-skin .header,html.cural-skin footer,html.cural-skin .product-detail-tabs-main,' +
+    'html.cural-skin .product-detail-page-detail-box,html.cural-skin .slider-banner,' +
+    'html.cural-skin [style*="background-color: rgb(0, 0, 0)"]:not(.add-to-cart):not(.add-to-cart *),' +
+    'html.cural-skin [style*="background-color:#000000"]:not(.add-to-cart):not(.add-to-cart *),' +
+    'html.cural-skin [style*="background:#000000"]:not(.add-to-cart):not(.add-to-cart *){' +
+      'background:#fff!important;background-color:#fff!important}' +
+    /* tum yazi koyu (sepet butonu haric) — inline beyaz yazi dahil */
+    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *){color:#0a0a0a!important}' +
+    'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *),' +
+    'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *),' +
+    'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' +
+    /* mono basliklar */
+    'html.cural-skin .product-name,html.cural-skin .product-name-main,' +
+    'html.cural-skin .product-detail-page-detail-box,html.cural-skin .product-detail-tabs-main{' +
+      'font-family:"Courier New",ui-monospace,monospace!important;letter-spacing:.04em!important}' +
+    'html.cural-skin .product-name,html.cural-skin .product-name-main{text-transform:uppercase!important;font-weight:700!important}' +
+    /* sepet butonu: siyah zemin beyaz yazi (Slawn) */
     'html.cural-skin .add-to-cart,html.cural-skin .add-to-cart *{' +
-      'background:#0a0a0a!important;color:#fff!important;border:none!important;border-radius:0!important;' +
+      'background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;border:none!important;border-radius:0!important;' +
       'letter-spacing:.22em!important;text-transform:uppercase!important;font-family:"Courier New",ui-monospace,monospace!important}' +
     'html.cural-skin .add-to-cart{transition:opacity .2s!important}' +
     'html.cural-skin .add-to-cart:hover{opacity:.78!important}' +
-    'html.cural-skin .add-favorite-basket{border-radius:0!important}' +
-    /* fiyat + sekme baslik mono */
-    'html.cural-skin .product-detail-page-detail-box,html.cural-skin .product-detail-tabs-main{' +
-      'font-family:"Courier New",ui-monospace,monospace!important}';
+    'html.cural-skin .add-favorite-basket{border-radius:0!important;border:1px solid #0a0a0a!important}' +
+    /* header/footer ince ayrac */
+    'html.cural-skin .header{border-bottom:1px solid #e8e8e8!important}' +
+    'html.cural-skin footer{border-top:1px solid #e8e8e8!important}';
 
   var FOOT =
     '<footer class="cu-foot"><span>CURAL. &copy; 2026</span>' +
@@ -228,6 +247,9 @@
     if (/^\/(stone-market|flame-store)\/?$/.test(p)) return "store";
     if (p === "" || p === "/") return "home";
     // urun sayfasi: Ikas DOM'u kalir, sadece CSS ile Slawn'a giydirilir (sepet/odeme korunur)
+    // once bilinen urun slug'lari (DOM gec gelse de skin uygulanir), sonra DOM tespiti
+    var bare = p.replace(/\/$/, "");
+    for (var i = 0; i < PRODUCTS.length; i++) { if (PRODUCTS[i].url === bare) return "product"; }
     if (document.querySelector(".product-detail-page-slider, .product-name, .add-to-cart")) return "product";
     // sepet/odeme = Ikas'in kendi sayfalari, dokunma
     return null;
