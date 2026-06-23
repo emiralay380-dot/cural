@@ -1,0 +1,294 @@
+/* ============================================================
+   CURAL. — Ikas storefront arayuz loader
+   Tek dosya: gate (bekletme/sifre) + home (ana sayfa) + store (magaza)
+   Ikas Dosya Yoneticisi'ne yuklenir, Ikas Scriptler'den <script src> ile cagrilir.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  /* ---------- AYAR ---------- */
+  var CONFIG = {
+    // Ikas Dosya Yoneticisi'ne burna-web.mp4 yukleyince URL'i buraya yapistir:
+    VIDEO_URL: "VIDEO_URL_BURAYA",
+    PASSWORD: "BOR1S.DROP",
+    UNLOCK_KEY: "cural_unlocked",
+    IG: "https://www.instagram.com/curalco/",
+    MAIL: "info@cural.co",
+    // Brevo subscription form (CURAL Drop) serve endpoint -> Liste #2
+    BREVO_ACTION: "https://c8f53a98.sibforms.com/serve/MUIFAFYxnOXl9WJjyn1Vi8UZkH-_XsyChyxguH97uTMjIUEDD5DsAVRhq6TMNZxEehiHyHFWATF9Jd9bcINX50ysXRTZYf8oq3aSQRZkITCqoifECitvk4NzO2AtwOCmL2Ps7frZBbdqYvgZi8J1amB6ewDoZ2D08B2PGxLwx4shGPk-lFeNOdL48ZLJp7qbtPrfSpm-2U3Fw6FOIA=="
+  };
+
+  /* ---------- LOGO (TAG varyant, scrawl) ---------- */
+  function logoSVG(px) {
+    return (
+      '<svg class="cu-logo" style="width:' + px + '" viewBox="0 0 800 240" fill="none" ' +
+      'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CURAL.">' +
+      '<defs><filter id="cu-rough" x="-14%" y="-50%" width="128%" height="200%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.03 0.045" numOctaves="3" seed="3" result="n"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>' +
+      '</filter></defs>' +
+      '<g filter="url(#cu-rough)" stroke="#0a0a0a" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M152 70 C 110 44, 52 54, 48 116 C 44 174, 112 176, 160 150"/>' +
+      '<path d="M188 60 C 184 124, 190 164, 238 164 C 286 164, 292 116, 292 56"/>' +
+      '<path d="M326 178 L 330 78 C 376 66, 416 86, 398 114 C 388 134, 340 130, 334 129 L 404 178"/>' +
+      '<path d="M440 162 L 494 54 L 548 162 M 462 122 L 526 122"/>' +
+      '<path d="M576 60 L 580 160 L 644 152"/>' +
+      '</g>' +
+      '<circle cx="680" cy="150" r="16" fill="#0a0a0a" filter="url(#cu-rough)"/>' +
+      '<path d="M150 200 C 320 184, 520 214, 690 192" filter="url(#cu-rough)" stroke="#0a0a0a" stroke-width="7" stroke-linecap="round" fill="none"/>' +
+      '</svg>'
+    );
+  }
+
+  /* ---------- INSTAGRAM IKONU ---------- */
+  var IG_SVG =
+    '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<rect x="2.5" y="2.5" width="19" height="19" rx="5"/>' +
+    '<circle cx="12" cy="12" r="4.2"/>' +
+    '<circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>';
+
+  /* ---------- KILIT (client-side gate) ---------- */
+  function isUnlocked() {
+    try { return localStorage.getItem(CONFIG.UNLOCK_KEY) === "1"; } catch (e) { return false; }
+  }
+  function unlock() {
+    try { localStorage.setItem(CONFIG.UNLOCK_KEY, "1"); } catch (e) {}
+  }
+
+  /* ---------- CSS ---------- */
+  var CSS =
+    ':root{--ink:#0a0a0a;--paper:#fff;--dim:#9a9a9a;--line:#e8e8e8;--stone:#f3f2f0;--mono:"Courier New",ui-monospace,monospace}' +
+    '#cural-root *{margin:0;padding:0;box-sizing:border-box}' +
+    '#cural-root{position:fixed;inset:0;z-index:999999;background:var(--paper);color:var(--ink);' +
+    'font-family:var(--mono);-webkit-font-smoothing:antialiased;overflow-y:auto;display:flex;flex-direction:column;min-height:100%}' +
+    '#cural-root a{color:inherit;text-decoration:none}' +
+    '.cu-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 24px 60px}' +
+    '.cu-logo{height:auto;display:block}' +
+    '.cu-rise{animation:cuRise .9s cubic-bezier(.2,.7,.2,1) both}' +
+    '@keyframes cuRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}' +
+    '@keyframes cuFade{from{opacity:0}to{opacity:1}}' +
+    /* menu */
+    '.cu-menu{display:flex;flex-direction:column;align-items:center;gap:14px;margin:40px 0 50px}' +
+    '.cu-menu a{font-size:12px;letter-spacing:.3em;text-transform:uppercase;padding-bottom:2px;border-bottom:1px solid transparent;transition:border-color .2s}' +
+    '.cu-menu a:hover{border-color:var(--ink)}.cu-menu a.muted{color:var(--dim)}' +
+    '.cu-tag{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--dim)}' +
+    '.cu-ig{display:inline-flex;margin-top:34px;color:var(--ink);opacity:.85;transition:opacity .2s}' +
+    '.cu-ig:hover{opacity:.45}' +
+    /* gate */
+    '.cu-clip{width:min(300px,70vw);aspect-ratio:16/10;margin:22px 0 40px;object-fit:cover;background:var(--stone);' +
+    'filter:grayscale(.15) contrast(1.02);pointer-events:none;user-select:none;animation:cuFade 1.4s ease .2s both}' +
+    '.cu-su-t{font-size:12px;letter-spacing:.4em;font-weight:700;text-transform:uppercase;margin-bottom:16px}' +
+    '.cu-su-s{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);line-height:2.1;margin-bottom:34px}' +
+    '.cu-join{display:flex;width:min(430px,88vw);border:1px solid var(--ink)}' +
+    '.cu-join input{flex:1;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink);padding:15px 16px}' +
+    '.cu-join input::placeholder{color:var(--dim)}' +
+    '.cu-join button{background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;padding:0 26px;transition:opacity .2s}' +
+    '.cu-join button:hover{opacity:.7}' +
+    '.cu-div{width:min(430px,88vw);height:1px;background:var(--line);margin:40px 0 26px}' +
+    '.cu-pwt{background:none;border:none;cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);transition:color .2s}' +
+    '.cu-pwt:hover{color:var(--ink)}' +
+    '.cu-pwbox{display:none;margin-top:22px;width:min(430px,88vw)}.cu-pwbox.open{display:block;animation:cuRise .5s ease both}' +
+    '.cu-pwrow{display:flex;border:1px solid var(--ink)}' +
+    '.cu-pwrow input{flex:1;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--ink);padding:14px 16px;text-align:center}' +
+    '.cu-pwrow button{background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;padding:0 24px;transition:opacity .2s}' +
+    '.cu-pwrow button:hover{opacity:.7}' +
+    '.cu-pwmsg{margin-top:12px;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);min-height:12px}' +
+    '.cu-pwmsg.err{color:#c0392b}.cu-pwmsg.ok{color:var(--ink)}' +
+    /* store */
+    '.cu-top{display:flex;flex-direction:column;align-items:center;padding:46px 24px 10px;gap:18px}' +
+    '.cu-coll{display:flex;justify-content:space-between;align-items:baseline;max-width:1080px;width:100%;margin:34px auto 0;padding:0 24px 16px;border-bottom:1px solid var(--line)}' +
+    '.cu-coll h1{font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:700}' +
+    '.cu-coll span{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}' +
+    '.cu-grid{max-width:1080px;width:100%;margin:0 auto;padding:30px 24px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}' +
+    '.cu-card{display:flex;flex-direction:column;border:1px solid var(--line);transition:border-color .2s}' +
+    '.cu-card:hover{border-color:var(--ink)}.cu-card:hover .cu-ph span{opacity:.4}' +
+    '.cu-ph{aspect-ratio:4/5;background:var(--paper);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}' +
+    '.cu-ph img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .5s ease,opacity .2s}' +
+    '.cu-card:hover .cu-ph img{transform:scale(1.04)}' +
+    '.cu-ph.sold img{opacity:.5}' +
+    '.cu-ph.sold::after{content:"SOLD OUT";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.3em;color:var(--ink);background:rgba(255,255,255,.55)}' +
+    '.cu-ph span{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);transition:opacity .2s}' +
+    '.cu-meta{padding:16px 16px 20px;display:flex;flex-direction:column;gap:6px}' +
+    '.cu-meta .nm{font-size:13px;letter-spacing:.06em;font-weight:700}' +
+    '.cu-meta .ty{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}' +
+    '.cu-meta .rw{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}' +
+    '.cu-meta .pr{font-size:13px}.cu-meta .st{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}' +
+    /* footer */
+    '.cu-foot{border-top:1px solid var(--line);padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}' +
+    '.cu-foot span,.cu-foot a{font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}' +
+    '.cu-foot a:hover{color:var(--ink)}' +
+    '@media(max-width:760px){.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
+    '@media(max-width:600px){.cu-menu{gap:12px;margin-bottom:42px}.cu-menu a{font-size:11px;letter-spacing:.24em}}' +
+    '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}.cu-foot{justify-content:center}}';
+
+  var FOOT =
+    '<footer class="cu-foot"><span>CURAL. &copy; 2026</span>' +
+    '<a href="' + CONFIG.IG + '" target="_blank" rel="noopener">@curalco</a>' +
+    '<a href="mailto:' + CONFIG.MAIL + '">' + CONFIG.MAIL + '</a></footer>';
+
+  /* ---------- SAYFALAR ---------- */
+  function gateHTML() {
+    return (
+      '<div class="cu-main">' +
+        '<div class="cu-rise" style="margin-bottom:40px">' + logoSVG("min(220px,56vw)") + '</div>' +
+        '<div class="cu-su-t cu-rise">Sign Up</div>' +
+        '<div class="cu-su-s cu-rise">Erken erişim, özel ürünler,<br>kodlar ve daha fazlasını elde edin</div>' +
+        '<form class="cu-join cu-rise" id="cuJoin">' +
+          '<input type="email" placeholder="email adresin" required>' +
+          '<button type="submit">Join</button>' +
+        '</form>' +
+        '<div class="cu-div"></div>' +
+        '<button class="cu-pwt" id="cuPwt">Şifreyi biliyorum</button>' +
+        '<div class="cu-pwbox" id="cuPwbox">' +
+          '<form class="cu-pwrow" id="cuPwform">' +
+            '<input type="password" id="cuPwin" placeholder="* * * * * * *" autocomplete="off">' +
+            '<button type="submit">Gir</button>' +
+          '</form>' +
+          '<div class="cu-pwmsg" id="cuPwmsg"></div>' +
+        '</div>' +
+      '</div>' + FOOT
+    );
+  }
+
+  function homeHTML() {
+    return (
+      '<div class="cu-main">' +
+        '<div class="cu-rise">' + logoSVG("min(300px,64vw)") + '</div>' +
+        '<nav class="cu-menu cu-rise">' +
+          '<a href="/">Home</a>' +
+          '<a href="/stone-market">Stone Market</a>' +
+          '<a href="/flame-store">Flame Market</a>' +
+        '</nav>' +
+        '<a class="cu-ig cu-rise" href="' + CONFIG.IG + '" target="_blank" rel="noopener" aria-label="Instagram">' + IG_SVG + '</a>' +
+      '</div>' + FOOT
+    );
+  }
+
+  // Urunler — Ikas gercek slug + og:image + fiyat
+  var IMG = "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/";
+  var PRODUCTS = [
+    { coll: "stone", url: "/boris",             nm: "BORİS.", ty: "Taş tozu figür — 50 adet", pr: "3.000 TL", st: "Stokta", sold: false,
+      img: IMG + "eebf872e-3c12-4239-bac4-d9724dcf20b5/720/say-no-mo.jpg" },
+    { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 30 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
+      img: IMG + "040d9176-f2b9-43d1-805b-c28bb6a9e11b/720/chatgpt-image-12-haz-2026-04-34-48.jpg" },
+    { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
+      img: IMG + "34b07a42-2802-48f2-86fb-a0a9bdd196bc/720/chatgpt-image-12-haz-2026-04-51-32.jpg" }
+  ];
+
+  function storeHTML(coll) {
+    var list = PRODUCTS.filter(function (p) { return p.coll === coll; });
+    var title = coll === "flame" ? "Flame Market" : "Stone Market";
+    var cards = list.map(function (p) {
+      return (
+        '<a class="cu-card" href="' + p.url + '">' +
+          '<div class="cu-ph' + (p.sold ? " sold" : "") + '">' +
+            (p.img ? '<img src="' + p.img + '" alt="' + p.nm + '" loading="lazy">' : '<span>' + p.nm + '</span>') +
+          '</div>' +
+          '<div class="cu-meta"><div class="nm">' + p.nm + '</div>' +
+          '<div class="ty">' + p.ty + '</div>' +
+          '<div class="rw"><span class="pr">' + p.pr + '</span>' +
+          '<span class="st">' + (p.sold ? "Sold out" : p.st) + '</span></div></div>' +
+        '</a>'
+      );
+    }).join("");
+    return (
+      '<div class="cu-top"><a href="/">' + logoSVG("150px") + '</a>' +
+        '<nav class="cu-menu" style="flex-direction:row;gap:24px;margin:0">' +
+          '<a href="/">Home</a><a href="/stone-market">Stone Market</a><a href="/flame-store">Flame Market</a>' +
+        '</nav>' +
+      '</div>' +
+      '<div class="cu-coll"><h1>' + title + '</h1><span>Drop 001 — ' + list.length + ' parça</span></div>' +
+      '<div class="cu-grid">' + cards + '</div>' + FOOT
+    );
+  }
+
+  /* ---------- SAYFA TESPITI ---------- */
+  function detectPage() {
+    if (window.CURAL_PAGE) return window.CURAL_PAGE;           // manuel override (test)
+    // Site kilitli: sifre girilene kadar HER sayfada gate goster
+    if (!isUnlocked()) return "gate";
+    var p = (location.pathname || "").toLowerCase();
+    // Magaza koleksiyon sayfalari -> custom Slawn grid (Ikas gorselleri)
+    if (/^\/(stone-market|flame-store)\/?$/.test(p)) return "store";
+    if (p === "" || p === "/") return "home";
+    // urun/sepet/odeme = Ikas'in kendi sayfalari, dokunma
+    return null;
+  }
+
+  /* ---------- DAVRANIS ---------- */
+  function wireGate(root) {
+    var join = root.querySelector("#cuJoin");
+    if (join) join.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = join.querySelector("input").value.trim();
+      var btn = join.querySelector("button");
+      // Brevo'ya gonder (action ayarliysa)
+      if (!email) return;
+      if (CONFIG.BREVO_ACTION && CONFIG.BREVO_ACTION.indexOf("http") === 0) {
+        var fd = new FormData();
+        fd.append("EMAIL", email);
+        fd.append("email_address_check", ""); // Brevo honeypot (bos kalmali)
+        fd.append("locale", "tr");
+        fetch(CONFIG.BREVO_ACTION, { method: "POST", mode: "no-cors", body: fd }).catch(function () {});
+      }
+      join.querySelector("input").value = "";
+      btn.textContent = "Tamam";
+      setTimeout(function () { btn.textContent = "Join"; }, 3000);
+    });
+
+    var pwt = root.querySelector("#cuPwt");
+    var box = root.querySelector("#cuPwbox");
+    if (pwt && box) pwt.addEventListener("click", function () {
+      box.classList.toggle("open");
+      var i = root.querySelector("#cuPwin"); if (i) i.focus();
+    });
+
+    var pwf = root.querySelector("#cuPwform");
+    if (pwf) pwf.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = root.querySelector("#cuPwin").value.trim();
+      var m = root.querySelector("#cuPwmsg");
+      if (v === CONFIG.PASSWORD) {
+        m.className = "cu-pwmsg ok"; m.textContent = "Açıldı.";
+        unlock();
+        setTimeout(function () { location.href = "/"; }, 500);
+      } else {
+        m.className = "cu-pwmsg err"; m.textContent = "Yanlış şifre.";
+      }
+    });
+  }
+
+  /* ---------- MONTAJ ---------- */
+  function mount() {
+    var page = detectPage();
+    if (!page) return; // dokunulmayacak sayfa
+
+    // CSS
+    var st = document.createElement("style");
+    st.id = "cural-style";
+    st.textContent = CSS;
+    document.head.appendChild(st);
+
+    // Root
+    var root = document.createElement("div");
+    root.id = "cural-root";
+    if (page === "gate") root.innerHTML = gateHTML();
+    else if (page === "store") {
+      var coll = /flame-store/.test((location.pathname || "").toLowerCase()) ? "flame" : "stone";
+      root.innerHTML = storeHTML(coll);
+    }
+    else root.innerHTML = homeHTML();
+
+    document.body.appendChild(root);
+    document.documentElement.style.overflow = "hidden"; // arka Ikas icerigini gizle/kilitle
+
+    if (page === "gate") wireGate(root);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mount);
+  } else {
+    mount();
+  }
+})();
