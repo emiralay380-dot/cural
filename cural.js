@@ -169,11 +169,11 @@
   var IMG = "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/";
   var PRODUCTS = [
     { coll: "stone", url: "/boris",             nm: "BORİS.", ty: "Taş tozu figür — 50 adet", pr: "3.000 TL", st: "Stokta", sold: false,
-      img: IMG + "eebf872e-3c12-4239-bac4-d9724dcf20b5/720/say-no-mo.jpg" },
+      img: IMG + "cefba4cb-f865-466a-bf64-a374f1a18a31/720/say-no-mo.jpg" },
     { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 30 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
-      img: IMG + "040d9176-f2b9-43d1-805b-c28bb6a9e11b/720/chatgpt-image-12-haz-2026-04-34-48.jpg" },
+      img: IMG + "687a540d-3bdf-432f-9054-64d740437ef9/720/chatgpt-image-12-haz-2026-04-34-48.jpg" },
     { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
-      img: IMG + "34b07a42-2802-48f2-86fb-a0a9bdd196bc/720/chatgpt-image-12-haz-2026-04-51-32.jpg" }
+      img: IMG + "9d914837-db93-4790-a639-e06479e932a1/720/chatgpt-image-12-haz-2026-04-51-32.jpg" }
   ];
 
   function storeHTML(coll) {
