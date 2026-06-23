@@ -122,6 +122,21 @@
     '@media(max-width:600px){.cu-menu{gap:12px;margin-bottom:42px}.cu-menu a{font-size:11px;letter-spacing:.24em}}' +
     '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}.cu-foot{justify-content:center}}';
 
+  /* ---------- URUN SAYFASI SKIN (Ikas DOM'u Slawn'a giydirir) ---------- */
+  var SKIN_CSS =
+    'html.cural-skin,html.cural-skin body{background:#fff!important;color:#0a0a0a!important}' +
+    'html.cural-skin .product-name,html.cural-skin .product-name-main{' +
+      'font-family:"Courier New",ui-monospace,monospace!important;letter-spacing:.04em!important;text-transform:uppercase!important;font-weight:700!important}' +
+    'html.cural-skin .add-to-cart,html.cural-skin .add-to-cart *{' +
+      'background:#0a0a0a!important;color:#fff!important;border:none!important;border-radius:0!important;' +
+      'letter-spacing:.22em!important;text-transform:uppercase!important;font-family:"Courier New",ui-monospace,monospace!important}' +
+    'html.cural-skin .add-to-cart{transition:opacity .2s!important}' +
+    'html.cural-skin .add-to-cart:hover{opacity:.78!important}' +
+    'html.cural-skin .add-favorite-basket{border-radius:0!important}' +
+    /* fiyat + sekme baslik mono */
+    'html.cural-skin .product-detail-page-detail-box,html.cural-skin .product-detail-tabs-main{' +
+      'font-family:"Courier New",ui-monospace,monospace!important}';
+
   var FOOT =
     '<footer class="cu-foot"><span>CURAL. &copy; 2026</span>' +
     '<a href="' + CONFIG.IG + '" target="_blank" rel="noopener">@curalco</a>' +
@@ -212,7 +227,9 @@
     // Magaza koleksiyon sayfalari -> custom Slawn grid (Ikas gorselleri)
     if (/^\/(stone-market|flame-store)\/?$/.test(p)) return "store";
     if (p === "" || p === "/") return "home";
-    // urun/sepet/odeme = Ikas'in kendi sayfalari, dokunma
+    // urun sayfasi: Ikas DOM'u kalir, sadece CSS ile Slawn'a giydirilir (sepet/odeme korunur)
+    if (document.querySelector(".product-detail-page-slider, .product-name, .add-to-cart")) return "product";
+    // sepet/odeme = Ikas'in kendi sayfalari, dokunma
     return null;
   }
 
@@ -267,10 +284,16 @@
     // CSS
     var st = document.createElement("style");
     st.id = "cural-style";
-    st.textContent = CSS;
+    st.textContent = CSS + SKIN_CSS;
     document.head.appendChild(st);
 
-    // Root
+    // Urun sayfasi: Ikas DOM'u kalir, sadece Slawn skin uygulanir (sepet calisir)
+    if (page === "product") {
+      document.documentElement.classList.add("cural-skin");
+      return;
+    }
+
+    // Root (gate/home/store)
     var root = document.createElement("div");
     root.id = "cural-root";
     if (page === "gate") root.innerHTML = gateHTML();
