@@ -299,15 +299,28 @@
   }
 
   /* ---------- MONTAJ ---------- */
-  function mount() {
-    var page = detectPage();
-    if (!page) return; // dokunulmayacak sayfa
-
-    // CSS
+  // CSS bir kez enjekte edilir
+  function injectCSS() {
+    if (document.getElementById("cural-style")) return;
     var st = document.createElement("style");
     st.id = "cural-style";
     st.textContent = CSS + SKIN_CSS;
     document.head.appendChild(st);
+  }
+
+  // onceki render izlerini temizle (SPA gecisinde tekrar render icin)
+  function cleanup() {
+    var r = document.getElementById("cural-root");
+    if (r) r.parentNode.removeChild(r);
+    document.documentElement.classList.remove("cural-skin");
+    document.documentElement.style.overflow = "";
+  }
+
+  function render() {
+    injectCSS();
+    cleanup();
+    var page = detectPage();
+    if (!page) return; // dokunulmayacak Ikas sayfasi (sepet/odeme)
 
     // Urun sayfasi: Ikas DOM'u kalir, sadece Slawn skin uygulanir (sepet calisir)
     if (page === "product") {
@@ -315,7 +328,7 @@
       return;
     }
 
-    // Root (gate/home/store)
+    // Root overlay (gate/home/store)
     var root = document.createElement("div");
     root.id = "cural-root";
     if (page === "gate") root.innerHTML = gateHTML();
@@ -326,14 +339,35 @@
     else root.innerHTML = homeHTML();
 
     document.body.appendChild(root);
-    document.documentElement.style.overflow = "hidden"; // arka Ikas icerigini gizle/kilitle
+    document.documentElement.style.overflow = "hidden"; // arka Ikas icerigini kilitle
 
     if (page === "gate") wireGate(root);
   }
 
+  // Ikas = Next.js SPA -> route degisiminde mount() tekrar calismaz.
+  // history.pushState/replaceState + popstate dinle, her gecisde yeniden render et.
+  function hookSPA() {
+    function wrap(name) {
+      var orig = history[name];
+      if (!orig || orig.__cural) return;
+      var fn = function () {
+        var ret = orig.apply(this, arguments);
+        setTimeout(render, 40); // Ikas DOM'u guncellesin sonra render
+        return ret;
+      };
+      fn.__cural = true;
+      history[name] = fn;
+    }
+    wrap("pushState");
+    wrap("replaceState");
+    window.addEventListener("popstate", function () { setTimeout(render, 40); });
+  }
+
+  function start() { hookSPA(); render(); }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", mount);
+    document.addEventListener("DOMContentLoaded", start);
   } else {
-    mount();
+    start();
   }
 })();
