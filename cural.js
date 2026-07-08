@@ -95,30 +95,36 @@
     '.cu-pwrow button:hover{opacity:.7}' +
     '.cu-pwmsg{margin-top:12px;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);min-height:12px}' +
     '.cu-pwmsg.err{color:#c0392b}.cu-pwmsg.ok{color:var(--ink)}' +
-    /* store */
-    '.cu-top{display:flex;flex-direction:column;align-items:center;padding:46px 24px 10px;gap:18px}' +
-    '.cu-coll{display:flex;justify-content:space-between;align-items:baseline;max-width:1080px;width:100%;margin:34px auto 0;padding:0 24px 16px;border-bottom:1px solid var(--line)}' +
+    /* store — Slawn duzeni: sol sidebar nav, kenarliksiz 4lu grid, isim/fiyat hover'da */
+    '.cu-top{display:flex;flex-direction:column;align-items:center;padding:40px 24px 8px}' +
+    '.cu-store{display:flex;align-items:flex-start;max-width:1280px;width:100%;margin:0 auto;padding:34px 24px 80px;gap:40px}' +
+    '.cu-side{width:130px;flex-shrink:0;display:flex;flex-direction:column;gap:14px;position:sticky;top:40px}' +
+    '.cu-side a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;align-self:flex-start}' +
+    '.cu-side a:hover{color:var(--ink)}' +
+    '.cu-side a.active{color:var(--ink);border-color:var(--ink)}' +
+    '.cu-main-col{flex:1;min-width:0}' +
+    '.cu-coll{display:flex;justify-content:space-between;align-items:baseline;width:100%;margin:0 0 24px;padding:0 0 14px;border-bottom:1px solid var(--line)}' +
     '.cu-coll h1{font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:700}' +
     '.cu-coll span{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}' +
-    '.cu-grid{max-width:1080px;width:100%;margin:0 auto;padding:30px 24px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}' +
-    '.cu-card{display:flex;flex-direction:column;border:1px solid var(--line);transition:border-color .2s}' +
-    '.cu-card:hover{border-color:var(--ink)}.cu-card:hover .cu-ph span{opacity:.4}' +
+    '.cu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}' +
+    '.cu-card{display:block;position:relative}' +
     '.cu-ph{aspect-ratio:4/5;background:var(--paper);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}' +
     '.cu-ph img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .5s ease,opacity .2s}' +
     '.cu-card:hover .cu-ph img{transform:scale(1.04)}' +
     '.cu-ph.sold img{opacity:.5}' +
-    '.cu-ph.sold::after{content:"SOLD OUT";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.3em;color:var(--ink);background:rgba(255,255,255,.55)}' +
+    '.cu-ph.sold::before{content:"Sold out";position:absolute;top:10px;left:10px;background:var(--ink);color:var(--paper);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:5px 9px;z-index:2}' +
     '.cu-ph span{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);transition:opacity .2s}' +
-    '.cu-meta{padding:16px 16px 20px;display:flex;flex-direction:column;gap:6px}' +
-    '.cu-meta .nm{font-size:13px;letter-spacing:.06em;font-weight:700}' +
-    '.cu-meta .ty{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}' +
-    '.cu-meta .rw{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}' +
-    '.cu-meta .pr{font-size:13px}.cu-meta .st{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}' +
+    '.cu-meta{padding:10px 2px 0;display:flex;flex-direction:column;gap:4px;opacity:0;transform:translateY(-3px);transition:opacity .2s,transform .2s}' +
+    '.cu-card:hover .cu-meta{opacity:1;transform:none}' +
+    '.cu-meta .nm{font-size:12px;letter-spacing:.06em;font-weight:700}' +
+    '.cu-meta .ty{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}' +
+    '.cu-meta .rw{display:flex;justify-content:space-between;align-items:baseline;margin-top:4px}' +
+    '.cu-meta .pr{font-size:12px}.cu-meta .st{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}' +
     /* footer */
     '.cu-foot{border-top:1px solid var(--line);padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}' +
     '.cu-foot span,.cu-foot a{font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}' +
     '.cu-foot a:hover{color:var(--ink)}' +
-    '@media(max-width:760px){.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
+    '@media(max-width:760px){.cu-store{flex-direction:column;gap:24px}.cu-side{flex-direction:row;flex-wrap:wrap;width:100%;position:static;gap:14px 22px}.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
     '@media(max-width:600px){.cu-menu{gap:12px;margin-bottom:42px}.cu-menu a{font-size:11px;letter-spacing:.24em}}' +
     '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}.cu-foot{justify-content:center}}';
 
@@ -227,13 +233,18 @@
       );
     }).join("");
     return (
-      '<div class="cu-top"><a href="/">' + logoSVG("150px") + '</a>' +
-        '<nav class="cu-menu" style="flex-direction:row;gap:24px;margin:0">' +
-          '<a href="/">Home</a><a href="/stone-market">Stone Market</a><a href="/flame-store">Flame Market</a>' +
+      '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a></div>' +
+      '<div class="cu-store">' +
+        '<nav class="cu-side">' +
+          '<a href="/">Home</a>' +
+          '<a href="/stone-market"' + (coll === "stone" ? ' class="active"' : '') + '>Stone Market</a>' +
+          '<a href="/flame-store"' + (coll === "flame" ? ' class="active"' : '') + '>Flame Market</a>' +
         '</nav>' +
-      '</div>' +
-      '<div class="cu-coll"><h1>' + title + '</h1><span>Drop 001 — ' + list.length + ' parça</span></div>' +
-      '<div class="cu-grid">' + cards + '</div>' + FOOT
+        '<div class="cu-main-col">' +
+          '<div class="cu-coll"><h1>' + title + '</h1><span>Drop 001 — ' + list.length + ' parça</span></div>' +
+          '<div class="cu-grid">' + cards + '</div>' +
+        '</div>' +
+      '</div>' + FOOT
     );
   }
 
