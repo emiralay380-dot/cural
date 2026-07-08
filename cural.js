@@ -59,7 +59,7 @@
   /* ---------- CSS ---------- */
   var CSS =
     ':root{--ink:#0a0a0a;--paper:#fff;--dim:#9a9a9a;--line:#e8e8e8;--stone:#f3f2f0;--mono:"Courier New",ui-monospace,monospace}' +
-    '#cural-root :where(*){margin:0;padding:0;box-sizing:border-box}' +
+    ':where(#cural-root *){margin:0;padding:0;box-sizing:border-box}' +
     '#cural-root{position:fixed;inset:0;z-index:999999;background:var(--paper);color:var(--ink);' +
     'font-family:var(--mono);-webkit-font-smoothing:antialiased;overflow-y:auto;display:flex;flex-direction:column;min-height:100%}' +
     '#cural-root a{color:inherit;text-decoration:none}' +
