@@ -96,17 +96,19 @@
     '.cu-pwmsg{margin-top:12px;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);min-height:12px}' +
     '.cu-pwmsg.err{color:#c0392b}.cu-pwmsg.ok{color:var(--ink)}' +
     /* store — Slawn duzeni: sol sidebar nav, kenarliksiz 4lu grid, isim/fiyat hover'da */
-    '.cu-top{display:flex;flex-direction:column;align-items:center;padding:40px 24px 8px}' +
-    '.cu-store{display:flex;align-items:flex-start;max-width:1280px;width:100%;margin:0 auto;padding:34px 24px 80px;gap:40px}' +
+    '.cu-top{display:flex;flex-direction:column;align-items:center;padding:64px 24px 0}' +
+    '.cu-cart{margin-top:16px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);transition:color .2s}' +
+    '.cu-cart:hover{color:var(--ink)}' +
+    '.cu-coll-wrap{max-width:1280px;width:100%;margin:56px auto 0;padding:0 24px}' +
+    '.cu-coll{display:flex;justify-content:space-between;align-items:baseline;width:100%;margin:0 0 24px;padding:0 0 14px;border-bottom:1px solid var(--line)}' +
+    '.cu-coll h1{font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:700}' +
+    '.cu-coll span{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}' +
+    '.cu-store{display:flex;align-items:flex-start;max-width:1280px;width:100%;margin:0 auto;padding:0 24px 80px;gap:40px}' +
     '.cu-side{width:130px;flex-shrink:0;display:flex;flex-direction:column;gap:14px;position:sticky;top:40px}' +
     '.cu-side a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;align-self:flex-start}' +
     '.cu-side a:hover{color:var(--ink)}' +
     '.cu-side a.active{color:var(--ink);border-color:var(--ink)}' +
-    '.cu-main-col{flex:1;min-width:0}' +
-    '.cu-coll{display:flex;justify-content:space-between;align-items:baseline;width:100%;margin:0 0 24px;padding:0 0 14px;border-bottom:1px solid var(--line)}' +
-    '.cu-coll h1{font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:700}' +
-    '.cu-coll span{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}' +
-    '.cu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}' +
+    '.cu-grid{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}' +
     '.cu-card{display:block;position:relative}' +
     '.cu-ph{aspect-ratio:4/5;background:var(--paper);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}' +
     '.cu-ph img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .5s ease,opacity .2s}' +
@@ -233,17 +235,17 @@
       );
     }).join("");
     return (
-      '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a></div>' +
+      '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a>' +
+        '<a class="cu-cart" href="/cart">Sepet</a>' +
+      '</div>' +
+      '<div class="cu-coll-wrap"><div class="cu-coll"><h1>' + title + '</h1><span>Drop 001 — ' + list.length + ' parça</span></div></div>' +
       '<div class="cu-store">' +
         '<nav class="cu-side">' +
           '<a href="/">Home</a>' +
           '<a href="/stone-market"' + (coll === "stone" ? ' class="active"' : '') + '>Stone Market</a>' +
           '<a href="/flame-store"' + (coll === "flame" ? ' class="active"' : '') + '>Flame Market</a>' +
         '</nav>' +
-        '<div class="cu-main-col">' +
-          '<div class="cu-coll"><h1>' + title + '</h1><span>Drop 001 — ' + list.length + ' parça</span></div>' +
-          '<div class="cu-grid">' + cards + '</div>' +
-        '</div>' +
+        '<div class="cu-grid">' + cards + '</div>' +
       '</div>' + FOOT
     );
   }
