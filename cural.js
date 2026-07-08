@@ -14,8 +14,11 @@
     UNLOCK_KEY: "cural_unlocked",
     IG: "https://www.instagram.com/curalco/",
     MAIL: "info@cural.co",
+    CONTACT_MAIL: "cural@outlook.com.tr",
     // Brevo subscription form (CURAL Drop) serve endpoint -> Liste #2
-    BREVO_ACTION: "https://c8f53a98.sibforms.com/serve/MUIFAFYxnOXl9WJjyn1Vi8UZkH-_XsyChyxguH97uTMjIUEDD5DsAVRhq6TMNZxEehiHyHFWATF9Jd9bcINX50ysXRTZYf8oq3aSQRZkITCqoifECitvk4NzO2AtwOCmL2Ps7frZBbdqYvgZi8J1amB6ewDoZ2D08B2PGxLwx4shGPk-lFeNOdL48ZLJp7qbtPrfSpm-2U3Fw6FOIA=="
+    BREVO_ACTION: "https://c8f53a98.sibforms.com/serve/MUIFAFYxnOXl9WJjyn1Vi8UZkH-_XsyChyxguH97uTMjIUEDD5DsAVRhq6TMNZxEehiHyHFWATF9Jd9bcINX50ysXRTZYf8oq3aSQRZkITCqoifECitvk4NzO2AtwOCmL2Ps7frZBbdqYvgZi8J1amB6ewDoZ2D08B2PGxLwx4shGPk-lFeNOdL48ZLJp7qbtPrfSpm-2U3Fw6FOIA==",
+    // Brevo subscription form (CURAL Iletisim) serve endpoint -> Liste #8 (sadece EMAIL kaydeder, mesaj mailto ile gider)
+    CONTACT_BREVO_ACTION: "https://c8f53a98.sibforms.com/serve/MUIFAIdSG5Mn9RQnBZcjls-um8r24u0KA1tW3tp72hZTLS-F57XABQzMKidjuBHH5VxnWLq-2Js9pERmXhZG75VbQQGOkZe32B0Mqxs_2CITiLd9WlJblmnSQ6NLQD0Ry24ZHMkQ5ugFBBcrunD0dZKTIVCR2x4NYdtr0vkHJG5_i6oE8h1sSUcHSvmOPZxusKf2SrCn2mUycsdySg=="
   };
 
   /* ---------- LOGO (TAG varyant, scrawl) ---------- */
@@ -126,6 +129,24 @@
     '.cu-foot{border-top:1px solid var(--line);padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}' +
     '.cu-foot span,.cu-foot a{font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}' +
     '.cu-foot a:hover{color:var(--ink)}' +
+    /* urun/sepet sayfalari icin ust bar (Ikas'in kendi header'i gizlenir, bu gecer) */
+    '.cu-skintop{display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 24px 18px;background:#fff;position:relative;z-index:10000}' +
+    '.cu-skintop a{text-decoration:none}' +
+    /* contact formu */
+    '.cu-form-wrap{flex:1;min-width:0;max-width:640px}' +
+    '.cu-form-intro{font-size:11px;color:var(--dim);letter-spacing:.05em;line-height:1.8;margin-bottom:28px}' +
+    '.cu-form-row{display:flex;gap:16px;margin-bottom:16px}' +
+    '.cu-form-row.full{flex-direction:column}' +
+    '.cu-field{flex:1;display:flex;flex-direction:column;min-width:0}' +
+    '.cu-field input,.cu-field textarea{border:1px solid var(--ink);padding:13px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink);background:transparent;outline:none;width:100%}' +
+    '.cu-field textarea{min-height:140px;resize:vertical}' +
+    '.cu-field input::placeholder,.cu-field textarea::placeholder{color:var(--dim)}' +
+    '.cu-form-actions{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:14px}' +
+    '.cu-btn{background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:14px 26px;transition:opacity .2s;display:inline-block}' +
+    '.cu-btn:hover{opacity:.78}' +
+    '.cu-btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}' +
+    '.cu-form-msg{margin-top:16px;font-size:10px;letter-spacing:.12em;color:var(--dim)}' +
+    '@media(max-width:600px){.cu-form-row{flex-direction:column;gap:12px}}' +
     '@media(max-width:760px){.cu-store{flex-direction:column;gap:24px}.cu-side{flex-direction:row;flex-wrap:wrap;width:100%;position:static;gap:14px 22px}.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
     '@media(max-width:600px){.cu-menu{gap:12px;margin-bottom:42px}.cu-menu a{font-size:11px;letter-spacing:.24em}}' +
     '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}.cu-foot{justify-content:center}}';
@@ -135,34 +156,44 @@
   // (style="background-color: rgb(0, 0, 0)" / "#000000ff" / color:#ffffff).
   // Inline style sadece !important + attribute-selector ile ezilir.
   var SKIN_CSS =
-    /* tum zemin beyaz: kok + ana sarmalayicilar + inline-siyah div'ler (sepet butonu haric) */
+    /* tum zemin beyaz: kok + ana sarmalayicilar + inline-siyah div'ler (sepet/shopping butonu haric) */
     'html.cural-skin,html.cural-skin body,html.cural-skin #__next,' +
-    'html.cural-skin .header,html.cural-skin footer,html.cural-skin .product-detail-tabs-main,' +
+    'html.cural-skin footer,html.cural-skin .product-detail-tabs-main,' +
     'html.cural-skin .product-detail-page-detail-box,html.cural-skin .slider-banner,' +
-    'html.cural-skin [style*="background-color: rgb(0, 0, 0)"]:not(.add-to-cart):not(.add-to-cart *),' +
-    'html.cural-skin [style*="background-color:#000000"]:not(.add-to-cart):not(.add-to-cart *),' +
-    'html.cural-skin [style*="background:#000000"]:not(.add-to-cart):not(.add-to-cart *){' +
+    'html.cural-skin [style*="background-color: rgb(0, 0, 0)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
+    'html.cural-skin [style*="background-color:#000000"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
+    'html.cural-skin [style*="background:#000000"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *){' +
       'background:#fff!important;background-color:#fff!important}' +
-    /* tum yazi koyu (sepet butonu haric) — inline beyaz yazi dahil */
-    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *){color:#0a0a0a!important}' +
-    'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *),' +
-    'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *),' +
+    /* Ikas'in kendi ust menusu gizlenir — yerine cu-skintop (logo+Sepet) gecer */
+    'html.cural-skin .header{display:none!important}' +
+    /* tum yazi koyu (sepet/shopping butonu haric) — inline beyaz yazi dahil */
+    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *){color:#0a0a0a!important}' +
+    'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
+    'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
     'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' +
     /* mono basliklar */
     'html.cural-skin .product-name,html.cural-skin .product-name-main,' +
     'html.cural-skin .product-detail-page-detail-box,html.cural-skin .product-detail-tabs-main{' +
       'font-family:"Courier New",ui-monospace,monospace!important;letter-spacing:.04em!important}' +
     'html.cural-skin .product-name,html.cural-skin .product-name-main{text-transform:uppercase!important;font-weight:700!important}' +
-    /* sepet butonu: siyah zemin beyaz yazi (Slawn) */
-    'html.cural-skin .add-to-cart,html.cural-skin .add-to-cart *{' +
+    /* sepet/satin-al butonlari: siyah zemin beyaz yazi (Slawn) */
+    'html.cural-skin .add-to-cart,html.cural-skin .add-to-cart *,' +
+    'html.cural-skin .shopping-button,html.cural-skin .shopping-button *{' +
       'background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;border:none!important;border-radius:0!important;' +
       'letter-spacing:.22em!important;text-transform:uppercase!important;font-family:"Courier New",ui-monospace,monospace!important}' +
-    'html.cural-skin .add-to-cart{transition:opacity .2s!important}' +
-    'html.cural-skin .add-to-cart:hover{opacity:.78!important}' +
+    'html.cural-skin .add-to-cart,html.cural-skin .shopping-button{transition:opacity .2s!important}' +
+    'html.cural-skin .add-to-cart:hover,html.cural-skin .shopping-button:hover{opacity:.78!important}' +
     'html.cural-skin .add-favorite-basket{border-radius:0!important;border:1px solid #0a0a0a!important}' +
-    /* header/footer ince ayrac */
-    'html.cural-skin .header{border-bottom:1px solid #e8e8e8!important}' +
-    'html.cural-skin footer{border-top:1px solid #e8e8e8!important}';
+    /* footer ince ayrac */
+    'html.cural-skin footer{border-top:1px solid #e8e8e8!important}' +
+    /* gercek Ikas checkout akisi (/checkout) JS ile inline --checkout-* degiskenlerini kendi ayarlariyla basar; */
+    /* !important stylesheet kurali non-important inline'i ezer, boylece marka renkleri (siyah/beyaz) korunur */
+    ':root{--checkout-button-bg-color:#0a0a0a!important;--checkout-button-text-color:#fff!important;' +
+    '--checkout-secondary-button-bg-color:#fff!important;--checkout-secondary-button-text-color:#0a0a0a!important;' +
+    '--checkout-secondary-button-border-color:#0a0a0a!important;--checkout-primary-bg-color:#fff!important;' +
+    '--checkout-primary-text-color:#0a0a0a!important;--checkout-secondary-bg-color:#fff!important;' +
+    '--checkout-secondary-text-color:#0a0a0a!important;--checkout-card-bg-color:#fff!important;' +
+    '--checkout-border-color:#e8e8e8!important}';
 
   var FOOT =
     '<footer class="cu-foot"><span>CURAL. &copy; 2026</span>' +
@@ -201,6 +232,7 @@
           '<a href="/">Home</a>' +
           '<a href="/stone-market">Stone Market</a>' +
           '<a href="/flame-store">Flame Market</a>' +
+          '<a href="/contact">Contact</a>' +
         '</nav>' +
         '<a class="cu-ig cu-rise" href="' + CONFIG.IG + '" target="_blank" rel="noopener" aria-label="Instagram">' + IG_SVG + '</a>' +
       '</div>' + FOOT
@@ -244,8 +276,49 @@
           '<a href="/">Home</a>' +
           '<a href="/stone-market"' + (coll === "stone" ? ' class="active"' : '') + '>Stone Market</a>' +
           '<a href="/flame-store"' + (coll === "flame" ? ' class="active"' : '') + '>Flame Market</a>' +
+          '<a href="/contact">Contact</a>' +
         '</nav>' +
         '<div class="cu-grid">' + cards + '</div>' +
+      '</div>' + FOOT
+    );
+  }
+
+  function contactHTML() {
+    return (
+      '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a>' +
+        '<a class="cu-cart" href="/cart">Sepet</a>' +
+      '</div>' +
+      '<div class="cu-coll-wrap"><div class="cu-coll"><h1>Contact</h1><span>Yanıt için 3-5 iş günü</span></div></div>' +
+      '<div class="cu-store">' +
+        '<nav class="cu-side">' +
+          '<a href="/">Home</a>' +
+          '<a href="/stone-market">Stone Market</a>' +
+          '<a href="/flame-store">Flame Market</a>' +
+          '<a href="/contact" class="active">Contact</a>' +
+        '</nav>' +
+        '<div class="cu-form-wrap">' +
+          '<form id="cuContactForm">' +
+            '<div class="cu-form-row">' +
+              '<div class="cu-field"><input type="text" name="FIRSTNAME" placeholder="Ad" required></div>' +
+              '<div class="cu-field"><input type="text" name="LASTNAME" placeholder="Soyad"></div>' +
+            '</div>' +
+            '<div class="cu-form-row">' +
+              '<div class="cu-field"><input type="email" name="EMAIL" placeholder="Email" required></div>' +
+              '<div class="cu-field"><input type="text" name="ORDERNUM" placeholder="Sipariş No (varsa)"></div>' +
+            '</div>' +
+            '<div class="cu-form-row full">' +
+              '<div class="cu-field"><input type="text" name="SUBJECT" placeholder="Konu" required></div>' +
+            '</div>' +
+            '<div class="cu-form-row full">' +
+              '<div class="cu-field"><textarea name="MESSAGE" placeholder="Mesaj" required></textarea></div>' +
+            '</div>' +
+            '<div class="cu-form-actions">' +
+              '<a class="cu-btn ghost" href="/">Ana Sayfa</a>' +
+              '<button class="cu-btn" type="submit">Gönder</button>' +
+            '</div>' +
+            '<div class="cu-form-msg" id="cuContactMsg"></div>' +
+          '</form>' +
+        '</div>' +
       '</div>' + FOOT
     );
   }
@@ -259,12 +332,15 @@
     // Magaza koleksiyon sayfalari -> custom Slawn grid (Ikas gorselleri)
     if (/^\/(stone-market|flame-store)\/?$/.test(p)) return "store";
     if (p === "" || p === "/") return "home";
+    if (p === "/contact" || p === "/pages/contact") return "contact";
+    // sepet/odeme: Ikas DOM'u kalir, CSS skin uygulanir (gercek sepet/checkout mantigi korunur)
+    if (p === "/cart" || p === "/checkout" || /^\/checkout\//.test(p)) return "cart";
     // urun sayfasi: Ikas DOM'u kalir, sadece CSS ile Slawn'a giydirilir (sepet/odeme korunur)
     // once bilinen urun slug'lari (DOM gec gelse de skin uygulanir), sonra DOM tespiti
     var bare = p.replace(/\/$/, "");
     for (var i = 0; i < PRODUCTS.length; i++) { if (PRODUCTS[i].url === bare) return "product"; }
     if (document.querySelector(".product-detail-page-slider, .product-name, .add-to-cart")) return "product";
-    // sepet/odeme = Ikas'in kendi sayfalari, dokunma
+    // hesap/arama vb. = Ikas'in kendi sayfalari, dokunma
     return null;
   }
 
@@ -311,6 +387,44 @@
     });
   }
 
+  function wireContact(root) {
+    var f = root.querySelector("#cuContactForm");
+    if (!f) return;
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var fd = new FormData(f);
+      var first = (fd.get("FIRSTNAME") || "").trim();
+      var last = (fd.get("LASTNAME") || "").trim();
+      var email = (fd.get("EMAIL") || "").trim();
+      var order = (fd.get("ORDERNUM") || "").trim();
+      var subject = (fd.get("SUBJECT") || "").trim();
+      var message = (fd.get("MESSAGE") || "").trim();
+      if (!first || !email || !subject || !message) return;
+
+      // Best-effort: e-postayi Brevo listesine ekle (sadece EMAIL kaydedilir)
+      if (CONFIG.CONTACT_BREVO_ACTION) {
+        var bfd = new FormData();
+        bfd.append("EMAIL", email);
+        bfd.append("email_address_check", "");
+        bfd.append("locale", "tr");
+        fetch(CONFIG.CONTACT_BREVO_ACTION, { method: "POST", mode: "no-cors", body: bfd }).catch(function () {});
+      }
+
+      // Asil mesaj: mailto ile dogrudan CONFIG.CONTACT_MAIL'e gider (backend gerektirmez)
+      var body = "Ad Soyad: " + first + " " + last + "\n" +
+        "Email: " + email + "\n" +
+        (order ? "Sipariş No: " + order + "\n" : "") +
+        "\n" + message;
+      var mailto = "mailto:" + CONFIG.CONTACT_MAIL +
+        "?subject=" + encodeURIComponent("[CURAL Iletisim] " + subject) +
+        "&body=" + encodeURIComponent(body);
+      window.location.href = mailto;
+
+      var msg = root.querySelector("#cuContactMsg");
+      if (msg) msg.textContent = "Mail uygulaman açıldı. Göndermek için onayla.";
+    });
+  }
+
   /* ---------- MONTAJ ---------- */
   // CSS bir kez enjekte edilir
   function injectCSS() {
@@ -325,23 +439,36 @@
   function cleanup() {
     var r = document.getElementById("cural-root");
     if (r) r.parentNode.removeChild(r);
+    var t = document.getElementById("cural-skintop");
+    if (t) t.parentNode.removeChild(t);
     document.documentElement.classList.remove("cural-skin");
     document.documentElement.style.overflow = "";
+  }
+
+  // urun/sepet sayfalari: Ikas DOM'u kalir, Ikas'in kendi header'i CSS ile gizlenir,
+  // yerine logo+Sepet iceren kucuk bir ust bar enjekte edilir
+  function injectSkinTop() {
+    var bar = document.createElement("div");
+    bar.id = "cural-skintop";
+    bar.className = "cu-skintop";
+    bar.innerHTML = '<a href="/">' + logoSVG("110px") + '</a><a class="cu-cart" href="/cart">Sepet</a>';
+    document.body.insertBefore(bar, document.body.firstChild);
   }
 
   function render() {
     injectCSS();
     cleanup();
     var page = detectPage();
-    if (!page) return; // dokunulmayacak Ikas sayfasi (sepet/odeme)
+    if (!page) return; // dokunulmayacak Ikas sayfasi (hesap/arama vb.)
 
-    // Urun sayfasi: Ikas DOM'u kalir, sadece Slawn skin uygulanir (sepet calisir)
-    if (page === "product") {
+    // Urun/sepet sayfasi: Ikas DOM'u kalir, sadece Slawn skin uygulanir (sepet/odeme calisir)
+    if (page === "product" || page === "cart") {
       document.documentElement.classList.add("cural-skin");
+      injectSkinTop();
       return;
     }
 
-    // Root overlay (gate/home/store)
+    // Root overlay (gate/home/store/contact)
     var root = document.createElement("div");
     root.id = "cural-root";
     if (page === "gate") root.innerHTML = gateHTML();
@@ -349,12 +476,14 @@
       var coll = /flame-store/.test((location.pathname || "").toLowerCase()) ? "flame" : "stone";
       root.innerHTML = storeHTML(coll);
     }
+    else if (page === "contact") root.innerHTML = contactHTML();
     else root.innerHTML = homeHTML();
 
     document.body.appendChild(root);
     document.documentElement.style.overflow = "hidden"; // arka Ikas icerigini kilitle
 
     if (page === "gate") wireGate(root);
+    if (page === "contact") wireContact(root);
   }
 
   // Ikas = Next.js SPA -> route degisiminde mount() tekrar calismaz.
