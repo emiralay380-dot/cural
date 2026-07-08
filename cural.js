@@ -142,9 +142,9 @@
     '.cu-field textarea{min-height:140px;resize:vertical}' +
     '.cu-field input::placeholder,.cu-field textarea::placeholder{color:var(--dim)}' +
     '.cu-form-actions{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:14px}' +
-    '.cu-btn{background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:14px 26px;transition:opacity .2s;display:inline-block}' +
+    '.cu-btn{-webkit-appearance:none;appearance:none;background:var(--ink)!important;color:var(--paper)!important;border:none;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:14px 26px;transition:opacity .2s;display:inline-block}' +
     '.cu-btn:hover{opacity:.78}' +
-    '.cu-btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}' +
+    '.cu-btn.ghost{background:transparent!important;color:var(--ink)!important;border:1px solid var(--ink)}' +
     '.cu-form-msg{margin-top:16px;font-size:10px;letter-spacing:.12em;color:var(--dim)}' +
     '@media(max-width:600px){.cu-form-row{flex-direction:column;gap:12px}}' +
     '@media(max-width:760px){.cu-store{flex-direction:column;gap:24px}.cu-side{flex-direction:row;flex-wrap:wrap;width:100%;position:static;gap:14px 22px}.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
