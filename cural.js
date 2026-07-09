@@ -183,7 +183,7 @@
       'letter-spacing:.22em!important;text-transform:uppercase!important;font-family:"Courier New",ui-monospace,monospace!important}' +
     'html.cural-skin .add-to-cart,html.cural-skin .shopping-button{transition:opacity .2s!important}' +
     'html.cural-skin .add-to-cart:hover,html.cural-skin .shopping-button:hover{opacity:.78!important}' +
-    'html.cural-skin .add-favorite-basket{display:none!important}' + 'html.cural-skin .product-detail-page-detail-box iframe{display:none!important}' +
+    'html.cural-skin .add-favorite-basket{display:none!important}' + 'html.cural-skin .product-detail-page-detail-box iframe{display:none!important}' + 'html.cural-skin .cu-cart-badge{color:#fff!important;background:#0a0a0a!important}' + 'html.cural-skin .basket-checkout-btn,html.cural-skin .basket-checkout-btn *{color:#fff!important}' + 'html.cural-skin .empty-basket svg{display:none!important}' +
     /* footer ince ayrac */
     'html.cural-skin footer{border-top:1px solid #e8e8e8!important}' +
     /* gercek Ikas checkout akisi (/checkout) JS ile inline --checkout-* degiskenlerini kendi ayarlariyla basar; */
@@ -505,7 +505,7 @@
     window.addEventListener("popstate", function () { setTimeout(render, 40); });
   }
 
-  function start() { hookSPA(); render(); new MutationObserver(scheduleCartBadgeSync).observe(document.body, { childList: true, subtree: true, characterData: true }); }
+  function start() { hookSPA(); render(); new MutationObserver(scheduleCartBadgeSync).observe(document.body, { childList: true, subtree: true, characterData: true }); setInterval(syncCartBadge, 1000); }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);
