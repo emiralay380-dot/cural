@@ -452,7 +452,7 @@
     bar.id = "cural-skintop";
     bar.className = "cu-skintop";
     bar.innerHTML = '<a href="/">' + logoSVG("110px") + '</a><a class="cu-cart" href="/cart">Sepet</a>';
-    document.body.insertBefore(bar, document.body.firstChild);
+    document.body.insertBefore(bar, document.body.firstChild); } function guardButtons(root) { var btns = root.querySelectorAll(".cu-join button, .cu-pwrow button, .cu-btn"); for (var i = 0; i < btns.length; i++) { (function (btn) { var ghost = btn.classList.contains("ghost"); function apply() { btn.style.setProperty("background", ghost ? "transparent" : "#0a0a0a", "important"); btn.style.setProperty("color", ghost ? "#0a0a0a" : "#fff", "important"); btn.style.setProperty("border", ghost ? "1px solid #0a0a0a" : "none", "important"); btn.style.setProperty("border-radius", "0", "important"); } apply(); var mo = new MutationObserver(function () { mo.disconnect(); apply(); mo.observe(btn, { attributes: true, attributeFilter: ["style"] }); }); mo.observe(btn, { attributes: true, attributeFilter: ["style"] }); })(btns[i]); }
   }
 
   function render() {
@@ -480,7 +480,7 @@
     else root.innerHTML = homeHTML();
 
     document.body.appendChild(root);
-    document.documentElement.style.overflow = "hidden"; // arka Ikas icerigini kilitle
+    document.documentElement.style.overflow = "hidden"; guardButtons(root);
 
     if (page === "gate") wireGate(root);
     if (page === "contact") wireContact(root);
