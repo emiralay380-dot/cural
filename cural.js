@@ -167,7 +167,7 @@
     /* Ikas'in kendi ust menusu gizlenir — yerine cu-skintop (logo+Sepet) gecer */
     'html.cural-skin .header{display:none!important}' +
     /* tum yazi koyu (sepet/shopping butonu haric) — inline beyaz yazi dahil */
-    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *){color:#0a0a0a!important}' +
+    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *){color:#0a0a0a!important}' +
     'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
     'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
     'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' +
