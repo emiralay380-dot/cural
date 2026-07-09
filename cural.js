@@ -100,7 +100,7 @@
     '.cu-pwmsg.err{color:#c0392b}.cu-pwmsg.ok{color:var(--ink)}' +
     /* store — Slawn duzeni: sol sidebar nav, kenarliksiz 4lu grid, isim/fiyat hover'da */
     '.cu-top{display:flex;flex-direction:column;align-items:center;padding:64px 24px 0}' +
-    '.cu-cart{margin-top:16px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);transition:color .2s}' +
+    '.cu-cart{margin-top:16px;display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);transition:color .2s}' + '.cu-cart-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:9px;letter-spacing:0;line-height:1}' +
     '.cu-cart:hover{color:var(--ink)}' +
     '.cu-coll-wrap{max-width:1280px;width:100%;margin:56px auto 0;padding:0 24px}' +
     '.cu-coll{display:flex;justify-content:space-between;align-items:baseline;width:100%;margin:0 0 24px;padding:0 0 14px;border-bottom:1px solid var(--line)}' +
@@ -268,7 +268,7 @@
     }).join("");
     return (
       '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a>' +
-        '<a class="cu-cart" href="/cart">Sepet</a>' +
+        '<a class="cu-cart" href="/cart">Sepet <span class="cu-cart-badge">0</span></a>' +
       '</div>' +
       '<div class="cu-coll-wrap"><div class="cu-coll"><h1>' + title + '</h1><span>Drop 001 — ' + list.length + ' parça</span></div></div>' +
       '<div class="cu-store">' +
@@ -286,7 +286,7 @@
   function contactHTML() {
     return (
       '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a>' +
-        '<a class="cu-cart" href="/cart">Sepet</a>' +
+        '<a class="cu-cart" href="/cart">Sepet <span class="cu-cart-badge">0</span></a>' +
       '</div>' +
       '<div class="cu-coll-wrap"><div class="cu-coll"><h1>Contact</h1><span>Yanıt için 3-5 iş günü</span></div></div>' +
       '<div class="cu-store">' +
@@ -451,8 +451,8 @@
     var bar = document.createElement("div");
     bar.id = "cural-skintop";
     bar.className = "cu-skintop";
-    bar.innerHTML = '<a href="/">' + logoSVG("110px") + '</a><a class="cu-cart" href="/cart">Sepet</a>';
-    document.body.insertBefore(bar, document.body.firstChild); } function guardButtons(root) { var btns = root.querySelectorAll(".cu-join button, .cu-pwrow button, .cu-btn"); for (var i = 0; i < btns.length; i++) { (function (btn) { var ghost = btn.classList.contains("ghost"); function apply() { btn.style.setProperty("background", ghost ? "transparent" : "#0a0a0a", "important"); btn.style.setProperty("color", ghost ? "#0a0a0a" : "#fff", "important"); btn.style.setProperty("border", ghost ? "1px solid #0a0a0a" : "none", "important"); btn.style.setProperty("border-radius", "0", "important"); } apply(); var mo = new MutationObserver(function () { mo.disconnect(); apply(); mo.observe(btn, { attributes: true, attributeFilter: ["style"] }); }); mo.observe(btn, { attributes: true, attributeFilter: ["style"] }); })(btns[i]); }
+    bar.innerHTML = '<a href="/">' + logoSVG("110px") + '</a><a class="cu-cart" href="/cart">Sepet <span class="cu-cart-badge">0</span></a>';
+    document.body.insertBefore(bar, document.body.firstChild); } function syncCartBadge() { var el = document.querySelector(".basket-bag"); var n = el ? (el.textContent || "").trim() : ""; var badges = document.querySelectorAll(".cu-cart-badge"); for (var i = 0; i < badges.length; i++) badges[i].textContent = n || "0"; } var cartBadgeScheduled = false; function scheduleCartBadgeSync() { if (cartBadgeScheduled) return; cartBadgeScheduled = true; requestAnimationFrame(function () { cartBadgeScheduled = false; syncCartBadge(); }); } function guardButtons(root) { var btns = root.querySelectorAll(".cu-join button, .cu-pwrow button, .cu-btn"); for (var i = 0; i < btns.length; i++) { (function (btn) { var ghost = btn.classList.contains("ghost"); function apply() { btn.style.setProperty("background", ghost ? "transparent" : "#0a0a0a", "important"); btn.style.setProperty("color", ghost ? "#0a0a0a" : "#fff", "important"); btn.style.setProperty("border", ghost ? "1px solid #0a0a0a" : "none", "important"); btn.style.setProperty("border-radius", "0", "important"); } apply(); var mo = new MutationObserver(function () { mo.disconnect(); apply(); mo.observe(btn, { attributes: true, attributeFilter: ["style"] }); }); mo.observe(btn, { attributes: true, attributeFilter: ["style"] }); })(btns[i]); }
   }
 
   function render() {
@@ -464,7 +464,7 @@
     // Urun/sepet sayfasi: Ikas DOM'u kalir, sadece Slawn skin uygulanir (sepet/odeme calisir)
     if (page === "product" || page === "cart") {
       document.documentElement.classList.add("cural-skin");
-      injectSkinTop();
+      injectSkinTop(); scheduleCartBadgeSync();
       return;
     }
 
@@ -480,7 +480,7 @@
     else root.innerHTML = homeHTML();
 
     document.body.appendChild(root);
-    document.documentElement.style.overflow = "hidden"; guardButtons(root);
+    document.documentElement.style.overflow = "hidden"; guardButtons(root); scheduleCartBadgeSync();
 
     if (page === "gate") wireGate(root);
     if (page === "contact") wireContact(root);
@@ -505,7 +505,7 @@
     window.addEventListener("popstate", function () { setTimeout(render, 40); });
   }
 
-  function start() { hookSPA(); render(); }
+  function start() { hookSPA(); render(); new MutationObserver(scheduleCartBadgeSync).observe(document.body, { childList: true, subtree: true, characterData: true }); }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);
