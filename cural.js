@@ -167,10 +167,10 @@
     /* Ikas'in kendi ust menusu gizlenir — yerine cu-skintop (logo+Sepet) gecer */
     'html.cural-skin .header{display:none!important}' +
     /* tum yazi koyu (sepet/shopping butonu haric) — inline beyaz yazi dahil */
-    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *){color:#0a0a0a!important}' +
+    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *):not([class*="QuantityCircle"]):not([class*="StepCircle"]):not([class*="StepCircle"] *):not([class*="TooltipContainer"]):not([class*="TooltipContainer"] *){color:#0a0a0a!important}' +
     'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
     'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
-    'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' +
+    'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' + 'html.cural-skin [class*="QuantityCircle"],html.cural-skin [class*="StepCircle"],html.cural-skin [class*="StepCircle"] *,html.cural-skin [class*="TooltipContainer"],html.cural-skin [class*="TooltipContainer"] *{color:#fff!important}' +
     /* mono basliklar */
     'html.cural-skin .product-name,html.cural-skin .product-name-main,' +
     'html.cural-skin .product-detail-page-detail-box,html.cural-skin .product-detail-tabs-main{' +
@@ -183,7 +183,7 @@
       'letter-spacing:.22em!important;text-transform:uppercase!important;font-family:"Courier New",ui-monospace,monospace!important}' +
     'html.cural-skin .add-to-cart,html.cural-skin .shopping-button{transition:opacity .2s!important}' +
     'html.cural-skin .add-to-cart:hover,html.cural-skin .shopping-button:hover{opacity:.78!important}' +
-    'html.cural-skin .add-favorite-basket{display:none!important}' + 'html.cural-skin .product-detail-page-detail-box iframe{display:none!important}' + 'html.cural-skin .cu-cart-badge{color:#fff!important;background:#0a0a0a!important}' + 'html.cural-skin .basket-checkout-btn,html.cural-skin .basket-checkout-btn *{color:#fff!important}' + 'html.cural-skin .empty-basket svg{display:none!important}' +
+    'html.cural-skin .add-favorite-basket{display:none!important}' + 'html.cural-skin .product-detail-page-detail-box iframe{display:none!important}' + 'html.cural-skin .cu-cart-badge{color:#fff!important;background:#0a0a0a!important}' + 'html.cural-skin .basket-checkout-btn,html.cural-skin .basket-checkout-btn *{color:#fff!important}' + 'html.cural-skin .empty-basket svg{display:none!important}' + 'html.cural-skin .breadcrumbs{display:none!important}' + 'html.cural-skin .cu-skintop{padding-bottom:56px!important}' + 'html.cural-skin .breadcrumbs{display:none!important}' + 'html.cural-skin .cu-skintop{padding-bottom:56px!important}' + 'html.cural-skin .breadcrumbs{display:none!important}' + 'html.cural-skin .cu-skintop{padding-bottom:56px!important}' +
     /* footer ince ayrac */
     'html.cural-skin footer{border-top:1px solid #e8e8e8!important}' +
     /* gercek Ikas checkout akisi (/checkout) JS ile inline --checkout-* degiskenlerini kendi ayarlariyla basar; */
