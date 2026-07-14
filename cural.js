@@ -243,12 +243,58 @@
   var IMG = "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/";
   var PRODUCTS = [
     { coll: "stone", url: "/boris",             nm: "BORİS.", ty: "Taş tozu figür — 50 adet", pr: "3.000 TL", st: "Stokta", sold: false,
-      img: IMG + "cefba4cb-f865-466a-bf64-a374f1a18a31/720/say-no-mo.jpg" },
+      img: IMG + "fb562a81-d46b-419c-8d41-0597a58d067c/720/chatgpt-image-14-tem-2026-20-37-56.webp" },
     { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 30 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
-      img: IMG + "687a540d-3bdf-432f-9054-64d740437ef9/720/chatgpt-image-12-haz-2026-04-34-48.jpg" },
+      img: IMG + "d3b61a8a-787e-4e21-b4dc-e1b5f8571453/720/chatgpt-image-14-tem-2026-20-43-56.webp" },
     { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
       img: IMG + "9d914837-db93-4790-a639-e06479e932a1/720/chatgpt-image-12-haz-2026-04-51-32.jpg" }
   ];
+
+  // Urun gorseli Ikas'taki gercek urun sayfasindan (og:image) canli cekilir,
+  // panelde yuklenen guncel gorsel otomatik yansir. Hardcoded img sadece ilk
+  // boyama (flash onleme) icin fallback.
+  var OG_CACHE_TTL = 3600000; // 1 saat
+  function ogImageCacheGet(url) {
+    try {
+      var raw = localStorage.getItem("cural_og_" + url);
+      if (!raw) return null;
+      var o = JSON.parse(raw);
+      if (Date.now() - o.t > OG_CACHE_TTL) return null;
+      return o.img;
+    } catch (e) { return null; }
+  }
+  function ogImageCacheSet(url, img) {
+    try { localStorage.setItem("cural_og_" + url, JSON.stringify({ img: img, t: Date.now() })); } catch (e) {}
+  }
+  function fetchOgImage(url, cb) {
+    var cached = ogImageCacheGet(url);
+    if (cached) { cb(cached); return; }
+    fetch(url).then(function (r) { return r.text(); }).then(function (html) {
+      var m = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+              html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+      if (m && m[1]) { ogImageCacheSet(url, m[1]); cb(m[1]); }
+    }).catch(function () {});
+  }
+  function refreshProductImages(root) {
+    var els = root.querySelectorAll(".cu-ph[data-purl]");
+    for (var i = 0; i < els.length; i++) {
+      (function (el) {
+        var purl = el.getAttribute("data-purl");
+        fetchOgImage(purl, function (imgUrl) {
+          var img = el.querySelector("img");
+          if (!img) {
+            img = document.createElement("img");
+            img.alt = el.getAttribute("data-nm") || "";
+            img.loading = "lazy";
+            var span = el.querySelector("span");
+            if (span) span.remove();
+            el.insertBefore(img, el.firstChild);
+          }
+          if (img.src !== imgUrl) img.src = imgUrl;
+        });
+      })(els[i]);
+    }
+  }
 
   function storeHTML(coll) {
     var list = PRODUCTS.filter(function (p) { return p.coll === coll; });
@@ -256,7 +302,7 @@
     var cards = list.map(function (p) {
       return (
         '<a class="cu-card" href="' + p.url + '">' +
-          '<div class="cu-ph' + (p.sold ? " sold" : "") + '">' +
+          '<div class="cu-ph' + (p.sold ? " sold" : "") + '" data-purl="' + p.url + '" data-nm="' + p.nm + '">' +
             (p.img ? '<img src="' + p.img + '" alt="' + p.nm + '" loading="lazy">' : '<span>' + p.nm + '</span>') +
           '</div>' +
           '<div class="cu-meta"><div class="nm">' + p.nm + '</div>' +
@@ -484,6 +530,7 @@
 
     if (page === "gate") wireGate(root);
     if (page === "contact") wireContact(root);
+    if (page === "store") refreshProductImages(root);
   }
 
   // Ikas = Next.js SPA -> route degisiminde mount() tekrar calismaz.
