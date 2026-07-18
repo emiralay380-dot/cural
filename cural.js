@@ -261,10 +261,10 @@
   var IMG = "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/";
   var PRODUCTS = [
     { coll: "stone", url: "/boris",             nm: "BORİS.", ty: "Taş tozu figür — 50 adet", pr: "3.000 TL", st: "Stokta", sold: false,
-      total: 50, special: 5, soldCount: 0,
+      total: 50, special: 5, soldCount: 0, size: "25 CM",
       img: IMG + "fb562a81-d46b-419c-8d41-0597a58d067c/720/chatgpt-image-14-tem-2026-20-37-56.webp" },
     { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 50 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
-      total: 50, special: 5, soldCount: 0,
+      total: 50, special: 5, soldCount: 0, size: "25 CM",
       img: IMG + "d3b61a8a-787e-4e21-b4dc-e1b5f8571453/720/chatgpt-image-14-tem-2026-20-43-56.webp" },
     { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
       total: null, special: 0,
@@ -540,13 +540,26 @@
   function pad3(n) { n = String(n); while (n.length < 3) n = "0" + n; return n; }
 
   function removeStockBadges() {
-    var old = document.querySelectorAll(".cu-stock-badge, .cu-special-badge");
+    var old = document.querySelectorAll(".cu-stock-badge, .cu-special-badge, .cu-size-label");
     for (var i = 0; i < old.length; i++) if (old[i].parentNode) old[i].parentNode.removeChild(old[i]);
+  }
+
+  // Urun basligi (BORİS./BURNA.) hemen altina boyut etiketi ("25 CM") eklenir.
+  function injectSizeLabel(p) {
+    if (!p || !p.size) return;
+    var nameEl = document.querySelector(".product-name");
+    if (!nameEl || !nameEl.parentNode) return;
+    var el = document.createElement("div");
+    el.className = "cu-size-label";
+    el.style.cssText = "margin-top:4px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#888!important;";
+    el.textContent = p.size;
+    nameEl.parentNode.insertBefore(el, nameEl.nextSibling);
   }
 
   function injectStockBadge() {
     removeStockBadges();
     var p = currentProduct();
+    injectSizeLabel(p);
     if (!p || !p.total) return;
     // Buy-box'in ICINE degil, TAMAMEN ALTINA (tam genislik, ayri blok) eklenir —
     // buy-box fiyat+buton icin dar bir flex satiri, icine sikisirsa metin kirilir.
