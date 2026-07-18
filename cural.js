@@ -594,6 +594,22 @@
     }
   }
 
+  // Ikas'in buy-box'i (Next.js hydration) degisken gecikmeyle mount olabiliyor —
+  // sabit tek seferlik timeout bazen kacirdigi icin, hedef bulunana kadar
+  // (max ~5sn) kisa aralarla tekrar denenir.
+  function scheduleStockBadge() {
+    var tries = 0;
+    var timer = setInterval(function () {
+      tries++;
+      var target = document.querySelector(".product-detail-page-buy-box .add-to-cart, .add-to-cart") ||
+        document.querySelector(".product-detail-page-buy-box");
+      if (target || tries >= 25) {
+        clearInterval(timer);
+        injectStockBadge();
+      }
+    }, 200);
+  }
+
   // Ikas'in gercek sepet sayisini (.basket-bag) okuyup kendi Sepet rozetlerimize yansitir.
   // Ikas DOM'u gec/asenkron mount olabilir, o yuzden body genelinde surekli izlenir.
   // Ikas'in .basket-bag'i sadece FARKLI URUN SAYISINI gosterir, toplam adedi degil
@@ -687,7 +703,7 @@
       document.documentElement.classList.add("cural-skin");
       injectSkinTop();
       scheduleCartBadgeSync();
-      if (page === "product") setTimeout(injectStockBadge, 60);
+      if (page === "product") scheduleStockBadge();
       return;
     }
 
