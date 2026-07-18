@@ -560,9 +560,10 @@
     removeStockBadges();
     var p = currentProduct();
     if (!p || !p.total) return;
-    var target = document.querySelector(".product-detail-page-buy-box .add-to-cart, .add-to-cart") ||
-      document.querySelector(".product-detail-page-buy-box");
-    if (!target || !target.parentNode) return;
+    // Buy-box'in ICINE degil, TAMAMEN ALTINA (tam genislik, ayri blok) eklenir —
+    // buy-box fiyat+buton icin dar bir flex satiri, icine sikisirsa metin kirilir.
+    var anchor = document.querySelector(".product-detail-page-buy-box") || document.querySelector(".add-to-cart");
+    if (!anchor || !anchor.parentNode) return;
 
     var remaining = detectRemainingStock(p.total);
     remaining = Math.max(0, Math.min(p.total, remaining));
@@ -571,26 +572,27 @@
 
     var wrap = document.createElement("div");
     wrap.className = "cu-stock-badge";
-    wrap.style.cssText = "margin:12px 0;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;";
+    wrap.style.cssText = "width:100%;margin:18px 0 0;font-family:var(--mono);";
 
     var serial = document.createElement("div");
-    serial.style.cssText = "color:#0a0a0a;font-weight:700;";
+    serial.style.cssText = "font-size:13px;font-weight:700;letter-spacing:.1em;color:#0a0a0a!important;";
     serial.textContent = p.nm + " #" + pad3(serialNo) + " / " + pad3(p.total);
     wrap.appendChild(serial);
 
     var left = document.createElement("div");
-    left.style.cssText = "margin-top:4px;color:" + (remaining <= 10 ? "#c0392b" : "#888") + ";";
+    left.style.cssText = "margin-top:4px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:" + (remaining <= 10 ? "#c0392b" : "#888") + "!important;";
     left.textContent = remaining <= 0 ? "TÜKENDİ" : (remaining <= 10 ? "SON " + remaining + " ADET" : remaining + " ADET KALDI");
     wrap.appendChild(left);
 
-    target.parentNode.insertBefore(wrap, target);
+    anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
 
     if (p.special > 0 && remaining > 0) {
       var badge = document.createElement("div");
       badge.className = "cu-special-badge";
-      badge.style.cssText = "margin:0 0 12px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#888;text-transform:uppercase;";
+      badge.style.cssText = "width:100%;box-sizing:border-box;margin:12px 0 0;padding:14px 16px;background:#0a0a0a!important;" +
+        "font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;line-height:1.5;color:#fff!important;text-transform:uppercase;";
       badge.textContent = p.special + " TANESİ AYRI DÖKÜLDÜ. BİRİ SENDE OLABİLİR.";
-      target.parentNode.insertBefore(badge, target);
+      anchor.parentNode.insertBefore(badge, wrap.nextSibling);
     }
   }
 
