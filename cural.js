@@ -589,8 +589,8 @@
     if (p.special > 0 && remaining > 0) {
       var badge = document.createElement("div");
       badge.className = "cu-special-badge";
-      badge.style.cssText = "width:100%;box-sizing:border-box;margin:12px 0 0;padding:14px 16px;background:#0a0a0a!important;" +
-        "font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;line-height:1.5;color:#fff!important;text-transform:uppercase;";
+      badge.style.cssText = "width:100%;box-sizing:border-box;margin:12px 0 0;padding-top:10px;border-top:1px solid #0a0a0a;" +
+        "font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;line-height:1.5;color:#0a0a0a!important;text-transform:uppercase;";
       badge.textContent = p.special + " TANESİ AYRI DÖKÜLDÜ. BİRİ SENDE OLABİLİR.";
       anchor.parentNode.insertBefore(badge, wrap.nextSibling);
     }
