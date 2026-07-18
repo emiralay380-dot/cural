@@ -100,8 +100,9 @@
     '.cu-pwmsg.err{color:#c0392b}.cu-pwmsg.ok{color:var(--ink)}' +
     /* store — Slawn duzeni: sol sidebar nav, kenarliksiz 4lu grid, isim/fiyat hover'da */
     '.cu-top{display:flex;flex-direction:column;align-items:center;padding:64px 24px 0}' +
-    '.cu-cart{margin-top:16px;display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);transition:color .2s}' + '.cu-cart-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:9px;letter-spacing:0;line-height:1}' +
+    '.cu-cart{margin-top:16px;display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);transition:color .2s}' +
     '.cu-cart:hover{color:var(--ink)}' +
+    '.cu-cart-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:9px;letter-spacing:0;line-height:1}' +
     '.cu-coll-wrap{max-width:1280px;width:100%;margin:56px auto 0;padding:0 24px}' +
     '.cu-coll{display:flex;justify-content:space-between;align-items:baseline;width:100%;margin:0 0 24px;padding:0 0 14px;border-bottom:1px solid var(--line)}' +
     '.cu-coll h1{font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:700}' +
@@ -168,9 +169,12 @@
     'html.cural-skin .header{display:none!important}' +
     /* tum yazi koyu (sepet/shopping butonu haric) — inline beyaz yazi dahil */
     'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *):not([class*="QuantityCircle"]):not([class*="StepCircle"]):not([class*="StepCircle"] *):not([class*="TooltipContainer"]):not([class*="TooltipContainer"] *){color:#0a0a0a!important}' +
-    'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
-    'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *),' +
-    'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' + 'html.cural-skin [class*="QuantityCircle"],html.cural-skin [class*="StepCircle"],html.cural-skin [class*="StepCircle"] *,html.cural-skin [class*="TooltipContainer"],html.cural-skin [class*="TooltipContainer"] *{color:#fff!important}' +
+    'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *),' +
+    'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *),' +
+    'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' +
+    /* checkout: adet/adim rozetleri + tooltip ikonlari (?) siyah-uzerine-siyah oluyordu */
+    'html.cural-skin [class*="QuantityCircle"],html.cural-skin [class*="StepCircle"],html.cural-skin [class*="StepCircle"] *,' +
+    'html.cural-skin [class*="TooltipContainer"],html.cural-skin [class*="TooltipContainer"] *{color:#fff!important}' +
     /* mono basliklar */
     'html.cural-skin .product-name,html.cural-skin .product-name-main,' +
     'html.cural-skin .product-detail-page-detail-box,html.cural-skin .product-detail-tabs-main{' +
@@ -182,8 +186,22 @@
       'background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;border:none!important;border-radius:0!important;' +
       'letter-spacing:.22em!important;text-transform:uppercase!important;font-family:"Courier New",ui-monospace,monospace!important}' +
     'html.cural-skin .add-to-cart,html.cural-skin .shopping-button{transition:opacity .2s!important}' +
-    'html.cural-skin .add-to-cart:hover,html.cural-skin .shopping-button:hover{opacity:.78!important}' + 'html.cural-skin .product-detail-page-buy-box{margin-top:16px!important;align-items:flex-start!important}' + 'html.cural-skin .product-detail-page-buy-box .add-to-cart{flex:none!important;width:auto!important;padding:14px 40px!important}' +
-    'html.cural-skin .add-favorite-basket{display:none!important}' + 'html.cural-skin .product-detail-page-detail-box iframe{display:none!important}' + 'html.cural-skin .cu-cart-badge{color:#fff!important;background:#0a0a0a!important}' + 'html.cural-skin .basket-checkout-btn,html.cural-skin .basket-checkout-btn *{color:#fff!important}' + 'html.cural-skin .empty-basket svg{display:none!important}' + 'html.cural-skin .breadcrumbs{display:none!important}' + 'html.cural-skin .cu-skintop{padding-bottom:56px!important}' + 'html.cural-skin .breadcrumbs{display:none!important}' + 'html.cural-skin .cu-skintop{padding-bottom:56px!important}' + 'html.cural-skin .breadcrumbs{display:none!important}' + 'html.cural-skin .cu-skintop{padding-bottom:56px!important}' +
+    'html.cural-skin .add-to-cart:hover,html.cural-skin .shopping-button:hover{opacity:.78!important}' +
+    /* urun sayfasi butonu Slawn'daki gibi kompakt (tam genislik degil) */
+    'html.cural-skin .product-detail-page-buy-box{margin-top:16px!important;align-items:flex-start!important}' +
+    'html.cural-skin .product-detail-page-buy-box .add-to-cart{flex:none!important;width:auto!important;padding:14px 40px!important}' +
+    /* favori/kalp ikonu ve hizli-odeme (Shop Pay) iframe'i gizlenir — Slawn referansinda yok, marka b/w minimal'ine uymuyor */
+    'html.cural-skin .add-favorite-basket{display:none!important}' +
+    'html.cural-skin .product-detail-page-detail-box iframe{display:none!important}' +
+    /* sepet rozeti + odemeye gec butonu: global koyu-yazi kurali yuzunden siyah-uzerine-siyah oluyordu, acikca duzeltilir */
+    'html.cural-skin .cu-cart-badge{color:#fff!important;background:#0a0a0a!important}' +
+    'html.cural-skin .basket-checkout-btn,html.cural-skin .basket-checkout-btn *{color:#fff!important}' +
+    /* bos sepet: buyuk gri sepet ikonu kaldirilir — Slawn referansinda sade metin var, ikon yok */
+    'html.cural-skin .empty-basket svg{display:none!important}' +
+    /* urun sayfasi breadcrumb'i (Stone Market > ...) kaldirilir — Slawn referansinda yok, gereksiz gurultu */
+    'html.cural-skin .breadcrumbs{display:none!important}' +
+    /* skintop (logo+Sepet) ile icerik arasi Slawn'daki gibi ferah bosluk birakilir */
+    'html.cural-skin .cu-skintop{padding-bottom:56px!important}' +
     /* footer ince ayrac */
     'html.cural-skin footer{border-top:1px solid #e8e8e8!important}' +
     /* gercek Ikas checkout akisi (/checkout) JS ile inline --checkout-* degiskenlerini kendi ayarlariyla basar; */
@@ -243,12 +261,21 @@
   var IMG = "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/";
   var PRODUCTS = [
     { coll: "stone", url: "/boris",             nm: "BORİS.", ty: "Taş tozu figür — 50 adet", pr: "3.000 TL", st: "Stokta", sold: false,
+      total: 50, special: 5,
       img: IMG + "fb562a81-d46b-419c-8d41-0597a58d067c/720/chatgpt-image-14-tem-2026-20-37-56.webp" },
-    { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 30 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
+    { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 50 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
+      total: 50, special: 0,
       img: IMG + "d3b61a8a-787e-4e21-b4dc-e1b5f8571453/720/chatgpt-image-14-tem-2026-20-43-56.webp" },
     { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
+      total: null, special: 0,
       img: IMG + "9d914837-db93-4790-a639-e06479e932a1/720/chatgpt-image-12-haz-2026-04-51-32.jpg" }
   ];
+
+  function currentProduct() {
+    var bare = (location.pathname || "").toLowerCase().replace(/\/$/, "");
+    for (var i = 0; i < PRODUCTS.length; i++) { if (PRODUCTS[i].url === bare) return PRODUCTS[i]; }
+    return null;
+  }
 
   // Urun gorseli Ikas'taki gercek urun sayfasindan (og:image) canli cekilir,
   // panelde yuklenen guncel gorsel otomatik yansir. Hardcoded img sadece ilk
@@ -498,7 +525,155 @@
     bar.id = "cural-skintop";
     bar.className = "cu-skintop";
     bar.innerHTML = '<a href="/">' + logoSVG("110px") + '</a><a class="cu-cart" href="/cart">Sepet <span class="cu-cart-badge">0</span></a>';
-    document.body.insertBefore(bar, document.body.firstChild); } function syncCartBadge() { var el = document.querySelector(".basket-bag"); var n = el ? (el.textContent || "").trim() : ""; var badges = document.querySelectorAll(".cu-cart-badge"); for (var i = 0; i < badges.length; i++) badges[i].textContent = n || "0"; } var cartBadgeScheduled = false; function scheduleCartBadgeSync() { if (cartBadgeScheduled) return; cartBadgeScheduled = true; requestAnimationFrame(function () { cartBadgeScheduled = false; syncCartBadge(); }); } function guardButtons(root) { var btns = root.querySelectorAll(".cu-join button, .cu-pwrow button, .cu-btn"); for (var i = 0; i < btns.length; i++) { (function (btn) { var ghost = btn.classList.contains("ghost"); function apply() { btn.style.setProperty("background", ghost ? "transparent" : "#0a0a0a", "important"); btn.style.setProperty("color", ghost ? "#0a0a0a" : "#fff", "important"); btn.style.setProperty("border", ghost ? "1px solid #0a0a0a" : "none", "important"); btn.style.setProperty("border-radius", "0", "important"); } apply(); var mo = new MutationObserver(function () { mo.disconnect(); apply(); mo.observe(btn, { attributes: true, attributeFilter: ["style"] }); }); mo.observe(btn, { attributes: true, attributeFilter: ["style"] }); })(btns[i]); }
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  /* ---------- STOK SAYACI + OZEL ROZET (urun sayfasi) ----------
+     Bu urun tipinde adet secici/input yok (canli DOM'da dogrulandi), o yuzden
+     kalan stok Ikas'in sayfaya gomdugu Next.js verisinden okunur:
+     window.__NEXT_DATA__.props.pageProps.pageSpecificData.variants[0].stock
+     (canli /boris sayfasinda dogrulandi). Bu deger sayfa SSR/ISR anindaki
+     stoktur — Ikas'in cache/revalidate araligina bagli olarak birkac dakika
+     geriden gelebilir, aninda degil. [data-stock-quantity] ve toplam adet
+     (dusmeden) yedek olarak kalir. */
+  function pad3(n) { n = String(n); while (n.length < 3) n = "0" + n; return n; }
+
+  function detectRemainingStock(total) {
+    try {
+      var variants = window.__NEXT_DATA__.props.pageProps.pageSpecificData.variants;
+      if (variants && variants[0] && typeof variants[0].stock === "number") return variants[0].stock;
+    } catch (e) {}
+    var stockEl = document.querySelector("[data-stock-quantity]");
+    if (stockEl) {
+      var n = parseInt(stockEl.getAttribute("data-stock-quantity"), 10);
+      if (!isNaN(n)) return n;
+    }
+    return total;
+  }
+
+  function removeStockBadges() {
+    var old = document.querySelectorAll(".cu-stock-badge, .cu-special-badge");
+    for (var i = 0; i < old.length; i++) if (old[i].parentNode) old[i].parentNode.removeChild(old[i]);
+  }
+
+  function injectStockBadge() {
+    removeStockBadges();
+    var p = currentProduct();
+    if (!p || !p.total) return;
+    var target = document.querySelector(".product-detail-page-buy-box .add-to-cart, .add-to-cart") ||
+      document.querySelector(".product-detail-page-buy-box");
+    if (!target || !target.parentNode) return;
+
+    var remaining = detectRemainingStock(p.total);
+    remaining = Math.max(0, Math.min(p.total, remaining));
+    var sold = p.total - remaining;
+    var serialNo = remaining > 0 ? sold + 1 : p.total;
+
+    var wrap = document.createElement("div");
+    wrap.className = "cu-stock-badge";
+    wrap.style.cssText = "margin:12px 0;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;";
+
+    var serial = document.createElement("div");
+    serial.style.cssText = "color:#0a0a0a;font-weight:700;";
+    serial.textContent = p.nm + " #" + pad3(serialNo) + " / " + pad3(p.total);
+    wrap.appendChild(serial);
+
+    var left = document.createElement("div");
+    left.style.cssText = "margin-top:4px;color:" + (remaining <= 10 ? "#c0392b" : "#888") + ";";
+    left.textContent = remaining <= 0 ? "TÜKENDİ" : (remaining <= 10 ? "SON " + remaining + " ADET" : remaining + " ADET KALDI");
+    wrap.appendChild(left);
+
+    target.parentNode.insertBefore(wrap, target);
+
+    if (p.special > 0 && remaining > 0) {
+      var badge = document.createElement("div");
+      badge.className = "cu-special-badge";
+      badge.style.cssText = "margin:0 0 12px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#888;text-transform:uppercase;";
+      badge.textContent = p.special + " TANESİ AYRI DÖKÜLDÜ. BİRİ SENDE OLABİLİR.";
+      target.parentNode.insertBefore(badge, target);
+    }
+  }
+
+  // Ikas'in gercek sepet sayisini (.basket-bag) okuyup kendi Sepet rozetlerimize yansitir.
+  // Ikas DOM'u gec/asenkron mount olabilir, o yuzden body genelinde surekli izlenir.
+  // Ikas'in .basket-bag'i sadece FARKLI URUN SAYISINI gosterir, toplam adedi degil
+  // (2 adet ayni urun sepette olsa da "1" yazar) — bu yuzden sepet/checkout sayfasindaki
+  // .quantity-box degerlerini toplayip gercek toplam adedi kendimiz hesapliyoruz.
+  var CART_QTY_KEY = "cural_cart_qty";
+  function computeCartQtyFromDOM() {
+    var boxes = document.querySelectorAll(".quantity-box");
+    if (boxes.length) {
+      var total = 0;
+      for (var i = 0; i < boxes.length; i++) {
+        var m = (boxes[i].textContent || "").match(/(\d+)/);
+        if (m) total += parseInt(m[1], 10);
+      }
+      return total;
+    }
+    // .quantity-box yoksa ya sepet gercekten bos ya da henuz yuklenmedi.
+    // .empty-basket varsa sepet sayfasi yuklenmis VE gercekten bos demektir (eski
+    // iyimser localStorage degerini gecersiz kilar, aksi halde bos sepette bile
+    // rozet eski sayiyi gostermeye devam ederdi).
+    if (document.querySelector(".empty-basket")) return 0;
+    return null;
+  }
+  function syncCartBadge() {
+    var n;
+    var computed = computeCartQtyFromDOM();
+    if (computed !== null) {
+      n = String(computed);
+      try { localStorage.setItem(CART_QTY_KEY, n); } catch (e) {}
+    } else {
+      try { n = localStorage.getItem(CART_QTY_KEY); } catch (e) { n = null; }
+      if (n === null) {
+        var el = document.querySelector(".basket-bag");
+        n = el ? (el.textContent || "").trim() : "";
+      }
+    }
+    var badges = document.querySelectorAll(".cu-cart-badge");
+    for (var i = 0; i < badges.length; i++) badges[i].textContent = n || "0";
+  }
+  // Urun sayfasinda "Sepete Ekle" her tiklamada tam 1 adet ekler (adet secici yok) —
+  // .quantity-box o sayfada olmadigi icin, tiklaninca iyimser (optimistic) +1 yapip
+  // sepet sayfasina gidildiginde gercek toplamla otomatik duzeltiliyor.
+  document.addEventListener("click", function (e) {
+    var btn = e.target && e.target.closest && e.target.closest(".add-to-cart");
+    if (!btn) return;
+    var cur = 0;
+    try { cur = parseInt(localStorage.getItem(CART_QTY_KEY), 10) || 0; } catch (err) {}
+    try { localStorage.setItem(CART_QTY_KEY, String(cur + 1)); } catch (err) {}
+    scheduleCartBadgeSync();
+  }, true);
+  var cartBadgeScheduled = false;
+  function scheduleCartBadgeSync() {
+    if (cartBadgeScheduled) return;
+    cartBadgeScheduled = true;
+    requestAnimationFrame(function () { cartBadgeScheduled = false; syncCartBadge(); });
+  }
+
+  // Ikas bazi native <button> elementlerine INLINE !important stil basiyor (siyah/beyaz temasi).
+  // CSS hicbir sekilde inline+!important'i ezemez — bu yuzden JS ile inline stili
+  // kendi degerlerimizle yeniden yazip bir MutationObserver ile koruyoruz.
+  function guardButtons(root) {
+    var btns = root.querySelectorAll(".cu-join button, .cu-pwrow button, .cu-btn");
+    for (var i = 0; i < btns.length; i++) {
+      (function (btn) {
+        var ghost = btn.classList.contains("ghost");
+        function apply() {
+          btn.style.setProperty("background", ghost ? "transparent" : "#0a0a0a", "important");
+          btn.style.setProperty("color", ghost ? "#0a0a0a" : "#fff", "important");
+          btn.style.setProperty("border", ghost ? "1px solid #0a0a0a" : "none", "important");
+          btn.style.setProperty("border-radius", "0", "important");
+        }
+        apply();
+        var mo = new MutationObserver(function () {
+          mo.disconnect();
+          apply();
+          mo.observe(btn, { attributes: true, attributeFilter: ["style"] });
+        });
+        mo.observe(btn, { attributes: true, attributeFilter: ["style"] });
+      })(btns[i]);
+    }
   }
 
   function render() {
@@ -510,7 +685,9 @@
     // Urun/sepet sayfasi: Ikas DOM'u kalir, sadece Slawn skin uygulanir (sepet/odeme calisir)
     if (page === "product" || page === "cart") {
       document.documentElement.classList.add("cural-skin");
-      injectSkinTop(); scheduleCartBadgeSync();
+      injectSkinTop();
+      scheduleCartBadgeSync();
+      if (page === "product") setTimeout(injectStockBadge, 60);
       return;
     }
 
@@ -526,7 +703,9 @@
     else root.innerHTML = homeHTML();
 
     document.body.appendChild(root);
-    document.documentElement.style.overflow = "hidden"; guardButtons(root); scheduleCartBadgeSync();
+    document.documentElement.style.overflow = "hidden"; // arka Ikas icerigini kilitle
+    guardButtons(root);
+    scheduleCartBadgeSync();
 
     if (page === "gate") wireGate(root);
     if (page === "contact") wireContact(root);
@@ -552,11 +731,18 @@
     window.addEventListener("popstate", function () { setTimeout(render, 40); });
   }
 
-  function start() { hookSPA(); render(); new MutationObserver(scheduleCartBadgeSync).observe(document.body, { childList: true, subtree: true, characterData: true }); setInterval(syncCartBadge, 1000); }
+  function start() {
+    hookSPA();
+    render();
+    // Ikas'in kendi sepet sayacini (.basket-bag) izler, urun eklenince/cikinca rozet anlik guncellenir
+    new MutationObserver(scheduleCartBadgeSync).observe(document.body, { childList: true, subtree: true, characterData: true });
+    // Ikas'in .basket-bag guncellemesi bazen mutation ile yakalanamiyor (async/gec render) — yedek olarak periyodik senkronize edilir
+    setInterval(syncCartBadge, 1000);
+  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);
   } else {
     start();
   }
-var CART_QTY_KEY="cural_cart_qty";function computeCartQtyFromDOM(){var boxes=document.querySelectorAll(".quantity-box");if(boxes.length){var total=0;for(var i=0;i<boxes.length;i++){var m=(boxes[i].textContent||"").match(/(\d+)/);if(m)total+=parseInt(m[1],10);}return total;}if(document.querySelector(".empty-basket"))return 0;return null;}function syncCartBadge(){var n;var computed=computeCartQtyFromDOM();if(computed!==null){n=String(computed);try{localStorage.setItem(CART_QTY_KEY,n);}catch(e){}}else{try{n=localStorage.getItem(CART_QTY_KEY);}catch(e){n=null;}if(n===null){var el=document.querySelector(".basket-bag");n=el?(el.textContent||"").trim():"";}}var badges=document.querySelectorAll(".cu-cart-badge");for(var i=0;i<badges.length;i++)badges[i].textContent=n||"0";}document.addEventListener("click",function(e){var btn=e.target&&e.target.closest&&e.target.closest(".add-to-cart");if(!btn)return;var cur=0;try{cur=parseInt(localStorage.getItem(CART_QTY_KEY),10)||0;}catch(err){}try{localStorage.setItem(CART_QTY_KEY,String(cur+1));}catch(err){}scheduleCartBadgeSync();},true);})();
+})();
