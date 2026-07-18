@@ -261,10 +261,10 @@
   var IMG = "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/";
   var PRODUCTS = [
     { coll: "stone", url: "/boris",             nm: "BORİS.", ty: "Taş tozu figür — 50 adet", pr: "3.000 TL", st: "Stokta", sold: false,
-      total: 50, special: 5,
+      total: 50, special: 5, soldCount: 0,
       img: IMG + "fb562a81-d46b-419c-8d41-0597a58d067c/720/chatgpt-image-14-tem-2026-20-37-56.webp" },
     { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 50 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
-      total: 50, special: 0,
+      total: 50, special: 0, soldCount: 0,
       img: IMG + "d3b61a8a-787e-4e21-b4dc-e1b5f8571453/720/chatgpt-image-14-tem-2026-20-43-56.webp" },
     { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
       total: null, special: 0,
@@ -529,27 +529,15 @@
   }
 
   /* ---------- STOK SAYACI + OZEL ROZET (urun sayfasi) ----------
-     Bu urun tipinde adet secici/input yok (canli DOM'da dogrulandi), o yuzden
-     kalan stok Ikas'in sayfaya gomdugu Next.js verisinden okunur:
-     window.__NEXT_DATA__.props.pageProps.pageSpecificData.variants[0].stock
-     (canli /boris sayfasinda dogrulandi). Bu deger sayfa SSR/ISR anindaki
-     stoktur — Ikas'in cache/revalidate araligina bagli olarak birkac dakika
-     geriden gelebilir, aninda degil. [data-stock-quantity] ve toplam adet
-     (dusmeden) yedek olarak kalir. */
+     Kalan stok Ikas'in sayfaya gomdugu __NEXT_DATA__'dan OKUNMUYOR artik —
+     o deger Ikas'in kendi sunucu-tarafi cache'inde uzun sure bayat kalabiliyor
+     (dogrulandi: admin'de 50/50 iken sayfa gunlerce "10" gosterdi, disaridan
+     duzeltilemiyor). Bunun yerine PRODUCTS[].soldCount MANUEL olarak tutulur —
+     her gercek satistan sonra bu sayi elle +1 artirilip push edilir. Az sayida
+     satis oldugu surece (erken asama drop) bu, Ikas'in ucretli Admin API/Private
+     App plani gerektiren otomatik entegrasyondan cok daha basit ve HER ZAMAN
+     dogru bir cozum. */
   function pad3(n) { n = String(n); while (n.length < 3) n = "0" + n; return n; }
-
-  function detectRemainingStock(total) {
-    try {
-      var variants = window.__NEXT_DATA__.props.pageProps.pageSpecificData.variants;
-      if (variants && variants[0] && typeof variants[0].stock === "number") return variants[0].stock;
-    } catch (e) {}
-    var stockEl = document.querySelector("[data-stock-quantity]");
-    if (stockEl) {
-      var n = parseInt(stockEl.getAttribute("data-stock-quantity"), 10);
-      if (!isNaN(n)) return n;
-    }
-    return total;
-  }
 
   function removeStockBadges() {
     var old = document.querySelectorAll(".cu-stock-badge, .cu-special-badge");
@@ -565,9 +553,8 @@
     var anchor = document.querySelector(".product-detail-page-buy-box") || document.querySelector(".add-to-cart");
     if (!anchor || !anchor.parentNode) return;
 
-    var remaining = detectRemainingStock(p.total);
-    remaining = Math.max(0, Math.min(p.total, remaining));
-    var sold = p.total - remaining;
+    var sold = Math.max(0, Math.min(p.total, p.soldCount || 0));
+    var remaining = p.total - sold;
     var serialNo = remaining > 0 ? sold + 1 : p.total;
 
     var wrap = document.createElement("div");
