@@ -551,7 +551,7 @@
     if (!nameEl || !nameEl.parentNode) return;
     var el = document.createElement("div");
     el.className = "cu-size-label";
-    el.style.cssText = "margin-top:4px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#888!important;";
+    el.style.cssText = "margin-top:6px;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#0a0a0a!important;";
     el.textContent = p.size;
     nameEl.parentNode.insertBefore(el, nameEl.nextSibling);
   }
