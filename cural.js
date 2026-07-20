@@ -742,10 +742,31 @@
     var els = document.querySelectorAll(".payment-link, .payment-link *");
     for (var i = 0; i < els.length; i++) els[i].style.setProperty("color", "#fff", "important");
   }
+  // Mobilde beliren sabit (fixed) "TOPLAM ... SEPETE GIT" alt bari — siyah zemin
+  // uzerinde siyah yazi kaliyordu. Sadece position:fixed konteyner icindeki
+  // "SEPETE GIT" / "TOPLAM" / fiyat metinleri hedeflenir; /cart sayfasindaki
+  // normal (fixed olmayan) TOPLAM kutusuna dokunulmaz.
+  function forceFixedBarWhite() {
+    var leafs = document.querySelectorAll("body *");
+    for (var i = 0; i < leafs.length; i++) {
+      var el = leafs[i];
+      if (el.children.length) continue;
+      var txt = (el.textContent || "").trim().toUpperCase();
+      if (!txt) continue;
+      if (txt.indexOf("SEPETE GİT") === -1 && txt !== "TOPLAM" && txt.charAt(0) !== "₺") continue;
+      var p = el, isFixed = false;
+      while (p && p !== document.body) {
+        if (getComputedStyle(p).position === "fixed") { isFixed = true; break; }
+        p = p.parentElement;
+      }
+      if (isFixed) el.style.setProperty("color", "#fff", "important");
+    }
+  }
   function watchLegacyGate() {
     killLegacyGate();
     forcePaymentLinkWhite();
-    new MutationObserver(function () { killLegacyGate(); forcePaymentLinkWhite(); })
+    forceFixedBarWhite();
+    new MutationObserver(function () { killLegacyGate(); forcePaymentLinkWhite(); forceFixedBarWhite(); })
       .observe(document.body, { childList: true, subtree: true });
   }
 
