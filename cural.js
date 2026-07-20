@@ -168,7 +168,7 @@
     /* Ikas'in kendi ust menusu gizlenir — yerine cu-skintop (logo+Sepet) gecer */
     'html.cural-skin .header{display:none!important}' +
     /* tum yazi koyu (sepet/shopping butonu haric) — inline beyaz yazi dahil */
-    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *):not([class*="QuantityCircle"]):not([class*="StepCircle"]):not([class*="StepCircle"] *):not([class*="TooltipContainer"]):not([class*="TooltipContainer"] *){color:#0a0a0a!important}' +
+    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *):not(.payment-link):not(.payment-link *):not([class*="QuantityCircle"]):not([class*="StepCircle"]):not([class*="StepCircle"] *):not([class*="TooltipContainer"]):not([class*="TooltipContainer"] *){color:#0a0a0a!important}' +
     'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *),' +
     'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *),' +
     'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' +
@@ -196,6 +196,7 @@
     /* sepet rozeti + odemeye gec butonu: global koyu-yazi kurali yuzunden siyah-uzerine-siyah oluyordu, acikca duzeltilir */
     'html.cural-skin .cu-cart-badge{color:#fff!important;background:#0a0a0a!important}' +
     'html.cural-skin .basket-checkout-btn,html.cural-skin .basket-checkout-btn *{color:#fff!important}' +
+    'html.cural-skin .payment-link,html.cural-skin .payment-link *{color:#fff!important}' +
     /* bos sepet: buyuk gri sepet ikonu kaldirilir — Slawn referansinda sade metin var, ikon yok */
     'html.cural-skin .empty-basket svg{display:none!important}' +
     /* urun sayfasi breadcrumb'i (Stone Market > ...) kaldirilir — Slawn referansinda yok, gereksiz gurultu */
