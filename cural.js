@@ -399,8 +399,6 @@
   /* ---------- SAYFA TESPITI ---------- */
   function detectPage() {
     if (window.CURAL_PAGE) return window.CURAL_PAGE;           // manuel override (test)
-    // Site kilitli: sifre girilene kadar HER sayfada gate goster
-    if (!isUnlocked()) return "gate";
     var p = (location.pathname || "").toLowerCase();
     // Magaza koleksiyon sayfalari -> custom Slawn grid (Ikas gorselleri)
     if (/^\/(stone-market|flame-store)\/?$/.test(p)) return "store";
