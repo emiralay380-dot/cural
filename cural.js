@@ -731,13 +731,22 @@
 
   // Ikas Popup/GTM tarafindan enjekte edilen eski "sifre gate" kutusu (id="co") —
   // kaynagi ne olursa olsun (GTM tag, Ikas Popup kaydi vb.) burada aninda temizlenir.
+  // Ayrica mini-sepet'in "Odeme adimina git" linki (.payment-link) Ikas'in kendi
+  // CSS'i tarafindan gecikmeli enjekte edildigi icin stylesheet kurali yetmiyor —
+  // burada inline stil ile zorlanir.
   function killLegacyGate() {
     var el = document.getElementById("co");
     if (el && el.parentNode) el.parentNode.removeChild(el);
   }
+  function forcePaymentLinkWhite() {
+    var els = document.querySelectorAll(".payment-link, .payment-link *");
+    for (var i = 0; i < els.length; i++) els[i].style.setProperty("color", "#fff", "important");
+  }
   function watchLegacyGate() {
     killLegacyGate();
-    new MutationObserver(killLegacyGate).observe(document.body, { childList: true });
+    forcePaymentLinkWhite();
+    new MutationObserver(function () { killLegacyGate(); forcePaymentLinkWhite(); })
+      .observe(document.body, { childList: true, subtree: true });
   }
 
   function start() {
