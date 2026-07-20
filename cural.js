@@ -537,8 +537,6 @@
      satis oldugu surece (erken asama drop) bu, Ikas'in ucretli Admin API/Private
      App plani gerektiren otomatik entegrasyondan cok daha basit ve HER ZAMAN
      dogru bir cozum. */
-  function pad3(n) { n = String(n); while (n.length < 3) n = "0" + n; return n; }
-
   function removeStockBadges() {
     var old = document.querySelectorAll(".cu-stock-badge, .cu-special-badge, .cu-size-label");
     for (var i = 0; i < old.length; i++) if (old[i].parentNode) old[i].parentNode.removeChild(old[i]);
@@ -568,31 +566,14 @@
 
     var sold = Math.max(0, Math.min(p.total, p.soldCount || 0));
     var remaining = p.total - sold;
-    var serialNo = remaining > 0 ? sold + 1 : p.total;
-
-    var wrap = document.createElement("div");
-    wrap.className = "cu-stock-badge";
-    wrap.style.cssText = "width:100%;margin:18px 0 0;font-family:var(--mono);";
-
-    var serial = document.createElement("div");
-    serial.style.cssText = "font-size:13px;font-weight:700;letter-spacing:.1em;color:#0a0a0a!important;";
-    serial.textContent = p.nm + " #" + pad3(serialNo) + " / " + pad3(p.total);
-    wrap.appendChild(serial);
-
-    var left = document.createElement("div");
-    left.style.cssText = "margin-top:4px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:" + (remaining <= 10 ? "#c0392b" : "#888") + "!important;";
-    left.textContent = remaining <= 0 ? "TÜKENDİ" : (remaining <= 10 ? "SON " + remaining + " ADET" : remaining + " ADET KALDI");
-    wrap.appendChild(left);
-
-    anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
 
     if (p.special > 0 && remaining > 0) {
       var badge = document.createElement("div");
       badge.className = "cu-special-badge";
-      badge.style.cssText = "width:100%;box-sizing:border-box;margin:12px 0 0;padding-top:10px;border-top:1px solid #0a0a0a;" +
+      badge.style.cssText = "width:100%;box-sizing:border-box;margin:18px 0 0;padding-top:10px;border-top:1px solid #0a0a0a;" +
         "font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;line-height:1.5;color:#0a0a0a!important;text-transform:uppercase;";
       badge.textContent = p.special + " TANESİ AYRI DÖKÜLDÜ. BİRİ SENDE OLABİLİR.";
-      anchor.parentNode.insertBefore(badge, wrap.nextSibling);
+      anchor.parentNode.insertBefore(badge, anchor.nextSibling);
     }
   }
 
