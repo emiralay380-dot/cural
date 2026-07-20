@@ -728,9 +728,21 @@
     window.addEventListener("popstate", function () { setTimeout(render, 40); });
   }
 
+  // Ikas Popup/GTM tarafindan enjekte edilen eski "sifre gate" kutusu (id="co") —
+  // kaynagi ne olursa olsun (GTM tag, Ikas Popup kaydi vb.) burada aninda temizlenir.
+  function killLegacyGate() {
+    var el = document.getElementById("co");
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+  }
+  function watchLegacyGate() {
+    killLegacyGate();
+    new MutationObserver(killLegacyGate).observe(document.body, { childList: true });
+  }
+
   function start() {
     hookSPA();
     render();
+    watchLegacyGate();
     // Ikas'in kendi sepet sayacini (.basket-bag) izler, urun eklenince/cikinca rozet anlik guncellenir
     new MutationObserver(scheduleCartBadgeSync).observe(document.body, { childList: true, subtree: true, characterData: true });
     // Ikas'in .basket-bag guncellemesi bazen mutation ile yakalanamiyor (async/gec render) — yedek olarak periyodik senkronize edilir
