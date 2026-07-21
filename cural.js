@@ -576,6 +576,82 @@
     }
   }
 
+  /* ---------- BORIS. 360 GORSEL VIEWER ---------- */
+  var BORIS_360_BASE = "https://emiralay380-dot.github.io/cural/img/boris360/";
+  var BORIS_360_N = 19;
+
+  function injectBoris360() {
+    if (document.getElementById("cu-360-viewer")) return; // zaten eklendi
+    var slider = document.querySelector(".product-detail-page-slider");
+    if (!slider || !slider.parentNode) return;
+
+    slider.style.display = "none";
+
+    var viewer = document.createElement("div");
+    viewer.id = "cu-360-viewer";
+    viewer.style.cssText = "width:100%;aspect-ratio:1/1;background:#fff;position:relative;" +
+      "cursor:grab;user-select:none;touch-action:pan-y;overflow:hidden;";
+
+    var badge = document.createElement("div");
+    badge.style.cssText = "position:absolute;bottom:14px;right:14px;background:rgba(10,10,10,.82);" +
+      "color:#fff;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:7px 11px;" +
+      "display:flex;align-items:center;gap:6px;pointer-events:none;z-index:2;font-family:var(--mono);";
+    badge.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8">' +
+      '<path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v8h8"/></svg>360°';
+    viewer.appendChild(badge);
+
+    var imgs = [];
+    for (var i = 0; i < BORIS_360_N; i++) {
+      var im = document.createElement("img");
+      im.src = BORIS_360_BASE + "boris_" + (i < 10 ? "0" + i : i) + ".png";
+      im.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:contain;" +
+        "pointer-events:none;-webkit-user-drag:none;opacity:0;";
+      viewer.appendChild(im);
+      imgs.push(im);
+    }
+    imgs[0].style.opacity = 1;
+
+    slider.parentNode.insertBefore(viewer, slider);
+
+    var current = 0, dragging = false, lastX = 0, PX_PER_FRAME = 18;
+    function show(i) {
+      i = ((i % BORIS_360_N) + BORIS_360_N) % BORIS_360_N;
+      if (i === current) return;
+      imgs[current].style.opacity = 0;
+      imgs[i].style.opacity = 1;
+      current = i;
+    }
+    function onDown(x) { dragging = true; lastX = x; viewer.style.cursor = "grabbing"; }
+    function onMove(x) {
+      if (!dragging) return;
+      var dx = x - lastX;
+      if (Math.abs(dx) >= PX_PER_FRAME) {
+        show(current - Math.trunc(dx / PX_PER_FRAME));
+        lastX = x;
+      }
+    }
+    function onUp() { dragging = false; viewer.style.cursor = "grab"; }
+
+    viewer.addEventListener("mousedown", function (e) { onDown(e.clientX); e.preventDefault(); });
+    window.addEventListener("mousemove", function (e) { onMove(e.clientX); });
+    window.addEventListener("mouseup", onUp);
+    viewer.addEventListener("touchstart", function (e) { onDown(e.touches[0].clientX); }, { passive: true });
+    viewer.addEventListener("touchmove", function (e) { onMove(e.touches[0].clientX); }, { passive: true });
+    viewer.addEventListener("touchend", onUp);
+  }
+
+  function scheduleBoris360() {
+    var p = currentProduct();
+    if (!p || p.url !== "/boris") return;
+    var tries = 0;
+    var timer = setInterval(function () {
+      tries++;
+      var target = document.querySelector(".product-detail-page-slider");
+      if (target) { clearInterval(timer); injectBoris360(); }
+      else if (tries >= 25) clearInterval(timer);
+    }, 200);
+  }
+
   // Ikas'in buy-box'i (Next.js hydration) degisken gecikmeyle mount olabiliyor —
   // sabit tek seferlik timeout bazen kacirdigi icin, hedef bulunana kadar
   // (max ~5sn) kisa aralarla tekrar denenir.
@@ -685,7 +761,7 @@
       document.documentElement.classList.add("cural-skin");
       injectSkinTop();
       scheduleCartBadgeSync();
-      if (page === "product") scheduleStockBadge();
+      if (page === "product") { scheduleStockBadge(); scheduleBoris360(); }
       return;
     }
 
