@@ -313,7 +313,7 @@
           if (!img) {
             img = document.createElement("img");
             img.alt = el.getAttribute("data-nm") || "";
-            img.loading = "lazy";
+            img.loading = "eager";
             var span = el.querySelector("span");
             if (span) span.remove();
             el.insertBefore(img, el.firstChild);
@@ -331,7 +331,9 @@
       return (
         '<a class="cu-card" href="' + p.url + '">' +
           '<div class="cu-ph' + (p.sold ? " sold" : "") + '" data-purl="' + p.url + '" data-nm="' + p.nm + '">' +
-            (p.img ? '<img src="' + p.img + '" alt="' + p.nm + '" loading="lazy">' : '<span>' + p.nm + '</span>') +
+            // Kucuk koleksiyon (2-3 urun), hepsi ekranda acilista — "lazy" burada
+            // gereksiz gecikme yaratiyordu (kisa an bos beyaz alan). Eager + yuksek oncelik.
+            (p.img ? '<img src="' + p.img + '" alt="' + p.nm + '" loading="eager" fetchpriority="high">' : '<span>' + p.nm + '</span>') +
           '</div>' +
           '<div class="cu-meta"><div class="nm">' + p.nm + '</div>' +
           '<div class="ty">' + p.ty + '</div>' +
@@ -405,8 +407,11 @@
     if (/^\/(stone-market|flame-store)\/?$/.test(p)) return "store";
     if (p === "" || p === "/") return "home";
     if (p === "/contact" || p === "/pages/contact") return "contact";
-    // sepet/odeme: Ikas DOM'u kalir, CSS skin uygulanir (gercek sepet/checkout mantigi korunur)
-    if (p === "/cart" || p === "/checkout" || /^\/checkout\//.test(p)) return "cart";
+    // sepet: Ikas DOM'u kalir, CSS skin + skintop (logo/Sepet) uygulanir
+    if (p === "/cart") return "cart";
+    // odeme akisi: Ikas'in KENDI markali header'i (logo + Giris Yap) zaten var —
+    // skintop eklenirse ustune biner, cift logo/baslik gorunur. Skin (renk) kalir, skintop yok.
+    if (p === "/checkout" || /^\/checkout\//.test(p)) return "checkout";
     // urun sayfasi: Ikas DOM'u kalir, sadece CSS ile Slawn'a giydirilir (sepet/odeme korunur)
     // once bilinen urun slug'lari (DOM gec gelse de skin uygulanir), sonra DOM tespiti
     var bare = p.replace(/\/$/, "");
@@ -707,6 +712,41 @@
     var badges = document.querySelectorAll(".cu-cart-badge");
     for (var i = 0; i < badges.length; i++) badges[i].textContent = n || "0";
   }
+  // "Sepete Ekle" tiklaninca gorsel geri bildirim yoktu — kullanici tikliyor,
+  // hicbir sey degismiyormus gibi gorunuyor, "bozuk" sanip siteden cikiyor olabilir.
+  // Toast + rozet titremesi ile tiklamanin isledigini aninda gosteriyoruz.
+  function showAddToCartToast() {
+    var t = document.getElementById("cu-toast");
+    if (!t) {
+      t = document.createElement("div");
+      t.id = "cu-toast";
+      t.style.cssText = "position:fixed;left:50%;bottom:28px;z-index:1000000;" +
+        "transform:translateX(-50%) translateY(16px);opacity:0;pointer-events:none;" +
+        "background:#0a0a0a;color:#fff;font-family:'Courier New',ui-monospace,monospace;" +
+        "font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;" +
+        "padding:13px 24px;white-space:nowrap;transition:opacity .25s ease,transform .25s ease;";
+      document.body.appendChild(t);
+    }
+    t.textContent = "Sepete eklendi.";
+    requestAnimationFrame(function () {
+      t.style.opacity = "1";
+      t.style.transform = "translateX(-50%) translateY(0)";
+    });
+    clearTimeout(t._cuTimer);
+    t._cuTimer = setTimeout(function () {
+      t.style.opacity = "0";
+      t.style.transform = "translateX(-50%) translateY(16px)";
+    }, 1700);
+    var badges = document.querySelectorAll(".cu-cart-badge");
+    for (var i = 0; i < badges.length; i++) {
+      (function (b) {
+        b.style.transition = "transform .18s ease";
+        b.style.transform = "scale(1.35)";
+        setTimeout(function () { b.style.transform = "scale(1)"; }, 180);
+      })(badges[i]);
+    }
+  }
+
   // Urun sayfasinda "Sepete Ekle" her tiklamada tam 1 adet ekler (adet secici yok) —
   // .quantity-box o sayfada olmadigi icin, tiklaninca iyimser (optimistic) +1 yapip
   // sepet sayfasina gidildiginde gercek toplamla otomatik duzeltiliyor.
@@ -717,6 +757,7 @@
     try { cur = parseInt(localStorage.getItem(CART_QTY_KEY), 10) || 0; } catch (err) {}
     try { localStorage.setItem(CART_QTY_KEY, String(cur + 1)); } catch (err) {}
     scheduleCartBadgeSync();
+    showAddToCartToast();
   }, true);
   var cartBadgeScheduled = false;
   function scheduleCartBadgeSync() {
@@ -756,10 +797,10 @@
     var page = detectPage();
     if (!page) return; // dokunulmayacak Ikas sayfasi (hesap/arama vb.)
 
-    // Urun/sepet sayfasi: Ikas DOM'u kalir, sadece Slawn skin uygulanir (sepet/odeme calisir)
-    if (page === "product" || page === "cart") {
+    // Urun/sepet/odeme sayfasi: Ikas DOM'u kalir, sadece Slawn skin uygulanir (sepet/odeme calisir)
+    if (page === "product" || page === "cart" || page === "checkout") {
       document.documentElement.classList.add("cural-skin");
-      injectSkinTop();
+      if (page !== "checkout") injectSkinTop(); // checkout'ta Ikas'in kendi header'i var, ustune binmesin
       scheduleCartBadgeSync();
       if (page === "product") { scheduleStockBadge(); scheduleBoris360(); }
       return;
