@@ -168,9 +168,9 @@
     /* Ikas'in kendi ust menusu gizlenir — yerine cu-skintop (logo+Sepet) gecer */
     'html.cural-skin .header{display:none!important}' +
     /* tum yazi koyu (sepet/shopping butonu haric) — inline beyaz yazi dahil */
-    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *):not(.payment-link):not(.payment-link *):not([class*="QuantityCircle"]):not([class*="StepCircle"]):not([class*="StepCircle"] *):not([class*="TooltipContainer"]):not([class*="TooltipContainer"] *){color:#0a0a0a!important}' +
-    'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *),' +
-    'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *),' +
+    'html.cural-skin,html.cural-skin *:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *):not(.basket-top-checkout):not(.basket-top-checkout *):not(.payment-link):not(.payment-link *):not([class*="QuantityCircle"]):not([class*="StepCircle"]):not([class*="StepCircle"] *):not([class*="TooltipContainer"]):not([class*="TooltipContainer"] *){color:#0a0a0a!important}' +
+    'html.cural-skin [style*="color:#ffffff"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *):not(.basket-top-checkout):not(.basket-top-checkout *),' +
+    'html.cural-skin [style*="color: rgb(255, 255, 255)"]:not(.add-to-cart):not(.add-to-cart *):not(.shopping-button):not(.shopping-button *):not(.cu-cart-badge):not(.basket-checkout-btn):not(.basket-checkout-btn *):not(.basket-top-checkout):not(.basket-top-checkout *),' +
     'html.cural-skin font[color="#ffffff"]{color:#0a0a0a!important}' +
     /* checkout: adet/adim rozetleri + tooltip ikonlari (?) siyah-uzerine-siyah oluyordu */
     'html.cural-skin [class*="QuantityCircle"],html.cural-skin [class*="StepCircle"],html.cural-skin [class*="StepCircle"] *,' +
@@ -196,6 +196,7 @@
     /* sepet rozeti + odemeye gec butonu: global koyu-yazi kurali yuzunden siyah-uzerine-siyah oluyordu, acikca duzeltilir */
     'html.cural-skin .cu-cart-badge{color:#fff!important;background:#0a0a0a!important}' +
     'html.cural-skin .basket-checkout-btn,html.cural-skin .basket-checkout-btn *{color:#fff!important}' +
+    'html.cural-skin .basket-top-checkout,html.cural-skin .basket-top-checkout *{color:#fff!important}' +
     'html.cural-skin .payment-link,html.cural-skin .payment-link *{color:#fff!important}' +
     /* bos sepet: buyuk gri sepet ikonu kaldirilir — Slawn referansinda sade metin var, ikon yok */
     'html.cural-skin .empty-basket svg{display:none!important}' +
@@ -879,11 +880,24 @@
       if (isFixed) el.style.setProperty("color", "#fff", "important");
     }
   }
+  // Checkout'taki "Indirim Kodu > Uygula" butonu Ikas'in hash'li CSS-module
+  // class'ini kullaniyor (build'den build'e degisir), CSS ile hedeflenemez.
+  // Metin eslesmesiyle (leaf node) bulunup inline beyaz yazi zorlanir.
+  function forceCouponButtonWhite() {
+    var leafs = document.querySelectorAll("body *");
+    for (var i = 0; i < leafs.length; i++) {
+      var el = leafs[i];
+      if (el.children.length) continue;
+      if ((el.textContent || "").trim() !== "Uygula") continue;
+      el.style.setProperty("color", "#fff", "important");
+    }
+  }
   function watchLegacyGate() {
     killLegacyGate();
     forcePaymentLinkWhite();
     forceFixedBarWhite();
-    new MutationObserver(function () { killLegacyGate(); forcePaymentLinkWhite(); forceFixedBarWhite(); })
+    forceCouponButtonWhite();
+    new MutationObserver(function () { killLegacyGate(); forcePaymentLinkWhite(); forceFixedBarWhite(); forceCouponButtonWhite(); })
       .observe(document.body, { childList: true, subtree: true });
   }
 
