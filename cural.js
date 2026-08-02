@@ -150,20 +150,7 @@
     '@media(max-width:600px){.cu-form-row{flex-direction:column;gap:12px}}' +
     '@media(max-width:760px){.cu-store{flex-direction:column;gap:24px}.cu-side{flex-direction:row;flex-wrap:wrap;width:100%;position:static;gap:14px 22px}.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
     '@media(max-width:600px){.cu-menu{gap:12px;margin-bottom:42px}.cu-menu a{font-size:11px;letter-spacing:.24em}}' +
-    '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}.cu-foot{justify-content:center}}' +
-    /* home — KIDO HQ referansi: grid zemin, el yazisi marker font, urunler sirayla akiyor */
-    '#cural-root.cu-kido{background-image:linear-gradient(#e6e6e6 1px,transparent 1px),linear-gradient(90deg,#e6e6e6 1px,transparent 1px);background-size:26px 26px}' +
-    '.cu-kido .cu-menu a{font-family:"Kalam",cursive;font-weight:700;font-size:15px;letter-spacing:.02em;text-transform:none}' +
-    '.cu-showcase{display:flex;flex-direction:column;align-items:center;gap:70px;padding:20px 24px 60px}' +
-    '.cu-prod-card{display:block}' +
-    '.cu-prod{width:min(300px,72vw)!important;aspect-ratio:auto!important;background:transparent!important}' +
-    '.cu-prod img{width:100%;height:auto!important;display:block;filter:drop-shadow(0 16px 26px rgba(0,0,0,.16))}' +
-    '.cu-doodle-wrap{display:flex;justify-content:center;padding:10px 24px 50px}' +
-    '.cu-doodle{width:110px;height:auto}' +
-    '.cu-sociallist{display:flex;flex-direction:column;align-items:center;gap:20px;padding-bottom:34px}' +
-    '.cu-sociallist a{font-family:"Kalam",cursive;font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:8px;color:var(--ink)}' +
-    '.cu-sociallist a:hover{opacity:.55}' +
-    '.cu-copy{font-family:"Kalam",cursive;font-size:12px;letter-spacing:.06em;color:var(--dim);text-align:center;padding-bottom:36px}';
+    '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}.cu-foot{justify-content:center}}';
 
   /* ---------- URUN SAYFASI SKIN (Ikas DOM'u Slawn'a giydirir) ---------- */
   // Ikas OZY temasi container'lara INLINE siyah bg + beyaz yazi basiyor
@@ -257,18 +244,7 @@
     );
   }
 
-  // KIDO HQ referansi: logo -> urunler sirayla scroll -> el cizimi ayirac -> sosyal link listesi
   function homeHTML() {
-    var showcase = PRODUCTS.map(function (p) {
-      return (
-        '<a class="cu-prod-card cu-rise" href="' + p.url + '" aria-label="' + p.nm + '">' +
-          '<div class="cu-ph cu-prod" data-purl="' + p.url + '" data-nm="' + p.nm + '">' +
-            (p.img ? '<img src="' + p.img + '" alt="' + p.nm + '" loading="eager" fetchpriority="high">' : '<span>' + p.nm + '</span>') +
-          '</div>' +
-        '</a>'
-      );
-    }).join("");
-
     return (
       '<div class="cu-main">' +
         '<div class="cu-rise">' + logoSVG("min(300px,64vw)") + '</div>' +
@@ -278,21 +254,8 @@
           '<a href="/flame-store">Flame Market</a>' +
           '<a href="/contact">Contact</a>' +
         '</nav>' +
-      '</div>' +
-      '<div class="cu-showcase">' + showcase + '</div>' +
-      '<div class="cu-doodle-wrap">' +
-        '<svg class="cu-doodle" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<g filter="url(#cu-rough)" stroke="#0a0a0a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">' +
-            '<path d="M40 30 C 96 6, 160 44, 150 104 C 142 152, 96 168, 62 150"/>' +
-            '<path d="M62 150 L 40 134 M62 150 L 82 140"/>' +
-          '</g>' +
-        '</svg>' +
-      '</div>' +
-      '<div class="cu-sociallist">' +
-        '<a href="' + CONFIG.IG + '" target="_blank" rel="noopener">' + IG_SVG + ' Instagram</a>' +
-        '<a href="mailto:' + CONFIG.MAIL + '">' + CONFIG.MAIL + '</a>' +
-      '</div>' +
-      '<div class="cu-copy">CURAL. &copy; 2026</div>'
+        '<a class="cu-ig cu-rise" href="' + CONFIG.IG + '" target="_blank" rel="noopener" aria-label="Instagram">' + IG_SVG + '</a>' +
+      '</div>' + FOOT
     );
   }
 
@@ -548,14 +511,6 @@
     st.id = "cural-style";
     st.textContent = CSS + SKIN_CSS;
     document.head.appendChild(st);
-    // KIDO-referans home sayfasi icin el yazisi/marker font
-    if (!document.getElementById("cural-font-kalam")) {
-      var lk = document.createElement("link");
-      lk.id = "cural-font-kalam";
-      lk.rel = "stylesheet";
-      lk.href = "https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap";
-      document.head.appendChild(lk);
-    }
   }
 
   // onceki render izlerini temizle (SPA gecisinde tekrar render icin)
@@ -861,7 +816,7 @@
       root.innerHTML = storeHTML(coll);
     }
     else if (page === "contact") root.innerHTML = contactHTML();
-    else { root.innerHTML = homeHTML(); root.classList.add("cu-kido"); }
+    else root.innerHTML = homeHTML();
 
     document.body.appendChild(root);
     document.documentElement.style.overflow = "hidden"; // arka Ikas icerigini kilitle
@@ -870,7 +825,7 @@
 
     if (page === "gate") wireGate(root);
     if (page === "contact") wireContact(root);
-    if (page === "store" || page === "home") refreshProductImages(root);
+    if (page === "store") refreshProductImages(root);
   }
 
   // Ikas = Next.js SPA -> route degisiminde mount() tekrar calismaz.
