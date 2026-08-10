@@ -209,7 +209,7 @@
     '.cu-skintop a{text-decoration:none}' +
 
     /* contact formu */
-    '.cu-form-wrap{flex:1;min-width:0;max-width:640px}' +
+    '.cu-form-wrap{width:100%;max-width:640px;margin:56px auto 0;padding:0 24px;box-sizing:border-box}' +
     '.cu-form-row{display:flex;gap:16px;margin-bottom:16px}' +
     '.cu-form-row.full{flex-direction:column}' +
     '.cu-field{flex:1;display:flex;flex-direction:column;min-width:0}' +
@@ -228,23 +228,14 @@
     '.cu-cart{margin-top:16px;display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);transition:color .2s}' +
     '.cu-cart:hover{color:var(--ink)}' +
     '.cu-cart-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:9px;letter-spacing:0;line-height:1}' +
-    '.cu-coll-wrap{max-width:1280px;width:100%;margin:56px auto 0;padding:0 24px}' +
-    '.cu-coll{display:flex;justify-content:space-between;align-items:baseline;width:100%;margin:0 0 24px;padding:0 0 14px;border-bottom:1px solid var(--line)}' +
-    '.cu-coll h1{font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:700}' +
-    '.cu-coll span{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}' +
-    '.cu-store{display:flex;align-items:flex-start;max-width:1280px;width:100%;margin:0 auto;padding:0 24px 80px;gap:40px}' +
-    '.cu-side{width:130px;flex-shrink:0;display:flex;flex-direction:column;gap:14px;position:sticky;top:40px}' +
-    '.cu-side a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;align-self:flex-start}' +
-    '.cu-side a:hover{color:var(--ink)}' +
-    '.cu-side a.active{color:var(--ink);border-color:var(--ink)}' +
     /* lokal prototipteki gibi sade, tamamen gorsel grid — isim/fiyat metni yok, sadece resim */
-    '.cu-grid{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1320px}' +
+    '.cu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:1320px;max-width:100%;margin:64px auto 0;padding:0 24px;box-sizing:border-box}' +
     '.cu-card{display:block;position:relative}' +
     '.cu-ph{aspect-ratio:1/1;background:var(--paper);display:flex;align-items:center;justify-content:center;position:relative;overflow:visible}' +
     '.cu-ph img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}' +
     '.cu-ph.sold img{opacity:.5}' +
     '.cu-ph.sold::before{content:"Sold out";position:absolute;top:10px;left:10px;background:var(--ink);color:var(--paper);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:5px 9px;z-index:2}' +
-    '@media(max-width:760px){.cu-store{flex-direction:column;gap:24px}.cu-side{flex-direction:row;flex-wrap:wrap;width:100%;position:static;gap:14px 22px}.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
+    '@media(max-width:760px){.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
     '@media(max-width:600px){.cu-menu{gap:12px;margin-bottom:42px}.cu-menu a{font-size:11px;letter-spacing:.24em}}' +
     '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}}' +
 
@@ -679,7 +670,6 @@
 
   function storeHTML(coll) {
     var list = PRODUCTS.filter(function (p) { return p.coll === coll; });
-    var title = coll === "flame" ? "Flame Market" : "Stone Market";
     var cards = list.map(function (p) {
       return (
         '<a class="cu-card" href="' + p.url + '">' +
@@ -692,16 +682,8 @@
     }).join("");
     return (
       shopHeaderHTML() +
-      '<div class="cu-coll-wrap"><div class="cu-coll"><h1>' + title + '</h1><span>Drop 001 — ' + list.length + ' parça</span></div></div>' +
-      '<div class="cu-store">' +
-        '<nav class="cu-side">' +
-          '<a href="/">Home</a>' +
-          '<a href="/stone-market"' + (coll === "stone" ? ' class="active"' : '') + '>Stone Market</a>' +
-          '<a href="/flame-store"' + (coll === "flame" ? ' class="active"' : '') + '>Flame Market</a>' +
-          '<a href="/contact">Contact</a>' +
-        '</nav>' +
-        '<div class="cu-grid">' + cards + '</div>' +
-      '</div>' + FOOT()
+      '<div class="cu-grid">' + cards + '</div>' +
+      FOOT()
     );
   }
 
@@ -726,14 +708,6 @@
   function contactHTML() {
     return (
       shopHeaderHTML() +
-      '<div class="cu-coll-wrap"><div class="cu-coll"><h1>Contact</h1><span>Yanıt için 3-5 iş günü</span></div></div>' +
-      '<div class="cu-store">' +
-        '<nav class="cu-side">' +
-          '<a href="/">Home</a>' +
-          '<a href="/stone-market">Stone Market</a>' +
-          '<a href="/flame-store">Flame Market</a>' +
-          '<a href="/contact" class="active">Contact</a>' +
-        '</nav>' +
         '<div class="cu-form-wrap">' +
           '<form id="cuContactForm">' +
             '<div class="cu-form-row">' +
@@ -757,7 +731,7 @@
             '<div class="cu-form-msg" id="cuContactMsg"></div>' +
           '</form>' +
         '</div>' +
-      '</div>' + FOOT()
+      FOOT()
     );
   }
 
