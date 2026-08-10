@@ -197,8 +197,8 @@
     /* shop-header: tum bindirme sayfalarinda + urun/sepet skin ust barinda kullanilan ortak baslik */
     '.cu-shop-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1320px;margin:0 auto;padding:27px 24px 0;min-height:100px;box-sizing:border-box}' +
     '.cu-shop-brand{font-size:26px;display:flex;align-items:center;gap:12px}' +
-    '.cu-shop-brand-icon{height:68px;width:auto;object-fit:contain}' +
-    '.cu-shop-brand-wordmark{height:56px;width:auto;object-fit:contain}' +
+    '.cu-shop-brand-icon{height:88px;width:auto;object-fit:contain}' +
+    '.cu-shop-brand-wordmark{height:104px;width:auto;object-fit:contain;position:relative;top:-20px}' +
     '.cu-shop-header-icons{display:flex;align-items:center;gap:22px}' +
     '.cu-header-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;opacity:.8;transition:opacity .15s ease;position:relative}' +
     '.cu-header-icon img{width:100%;height:100%;object-fit:contain}' +
@@ -209,7 +209,7 @@
     '.cu-skintop a{text-decoration:none}' +
 
     /* contact formu */
-    '.cu-form-wrap{width:100%;max-width:640px;margin:56px auto 0;padding:0 24px;box-sizing:border-box}' +
+    '.cu-form-wrap{flex:1;width:100%;max-width:640px;margin:56px auto 0;padding:0 24px;box-sizing:border-box}' +
     '.cu-form-row{display:flex;gap:16px;margin-bottom:16px}' +
     '.cu-form-row.full{flex-direction:column}' +
     '.cu-field{flex:1;display:flex;flex-direction:column;min-width:0}' +
@@ -229,7 +229,7 @@
     '.cu-cart:hover{color:var(--ink)}' +
     '.cu-cart-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:9px;letter-spacing:0;line-height:1}' +
     /* lokal prototipteki gibi sade, tamamen gorsel grid — isim/fiyat metni yok, sadece resim */
-    '.cu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:1320px;max-width:100%;margin:64px auto 0;padding:0 24px;box-sizing:border-box}' +
+    '.cu-grid{flex:1;display:grid;align-content:start;grid-template-columns:repeat(4,1fr);gap:16px;width:1320px;max-width:100%;margin:64px auto 0;padding:0 24px;box-sizing:border-box}' +
     '.cu-card{display:block;position:relative}' +
     '.cu-ph{aspect-ratio:1/1;background:var(--paper);display:flex;align-items:center;justify-content:center;position:relative;overflow:visible}' +
     '.cu-ph img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}' +
@@ -240,7 +240,7 @@
     '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}}' +
 
     /* ---------- legal sayfalari ---------- */
-    '.cu-legal-wrap{width:100%;margin:0 auto;padding:0 40px 60px}' +
+    '.cu-legal-wrap{flex:1;width:100%;margin:0 auto;padding:0 40px 60px}' +
     '.cu-legal{max-width:720px;margin:0 auto;padding:20px 0 40px;font-family:Arial,sans-serif;letter-spacing:0;line-height:1.7;font-size:15px}' +
     '.cu-legal h1{font-family:var(--disp);font-size:42px;letter-spacing:.5px;margin-bottom:6px}' +
     '.cu-legal .upd{opacity:.5;font-size:13px;margin-bottom:40px}' +
