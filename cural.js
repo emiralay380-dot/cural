@@ -198,7 +198,7 @@
     '.cu-shop-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1320px;margin:0 auto;padding:27px 24px 0;min-height:100px;box-sizing:border-box}' +
     '.cu-shop-brand{font-size:26px;display:flex;align-items:center;gap:12px}' +
     '.cu-shop-brand-icon{height:88px;width:auto;object-fit:contain}' +
-    '.cu-shop-brand-wordmark{height:104px;width:auto;object-fit:contain;position:relative;top:-20px}' +
+    '.cu-shop-brand-wordmark{height:104px;width:auto;object-fit:contain;position:relative;top:-27px}' +
     '.cu-shop-header-icons{display:flex;align-items:center;gap:22px}' +
     '.cu-header-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;opacity:.8;transition:opacity .15s ease;position:relative}' +
     '.cu-header-icon img{width:100%;height:100%;object-fit:contain}' +
