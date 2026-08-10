@@ -67,8 +67,10 @@
     'font-family:var(--mono);-webkit-font-smoothing:antialiased;overflow-y:auto;display:flex;flex-direction:column;min-height:100%}' +
     '#cural-root a{color:inherit;text-decoration:none}' +
     /* ozel imlec: sadece bindirme (overlay) sayfalarinda, gercek Ikas sepet/odeme akisina karismasin */
-    '#cural-root,#cural-root *{cursor:url(' + IMGBASE + 'home/cursor.png) 6 4,auto}' +
-    '#cural-root a,#cural-root button,#cural-root .cu-fig,#cural-root .cu-card{cursor:url(' + IMGBASE + 'home/cursor.png) 6 4,pointer}' +
+    '#cural-root,#cural-root *,html.cural-skin-product,html.cural-skin-product body,html.cural-skin-product *{cursor:url(' + IMGBASE + 'home/cursor.png) 6 4,auto}' +
+    '#cural-root a,#cural-root button,#cural-root .cu-fig,#cural-root .cu-card,' +
+    'html.cural-skin-product a,html.cural-skin-product button{cursor:url(' + IMGBASE + 'home/cursor.png) 6 4,pointer}' +
+    'html.cural-skin-product #cu-360-viewer{cursor:url(' + IMGBASE + 'home/cursor.png) 6 4,grab!important}' +
     '.cu-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 24px 60px}' +
     '.cu-logo{height:auto;display:block}' +
     '.cu-rise{animation:cuRise .9s cubic-bezier(.2,.7,.2,1) both}' +
@@ -106,8 +108,8 @@
     '.cu-home{flex:1;display:flex;flex-direction:column;min-height:100%;' +
       'background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);' +
       'background-size:var(--grid-size) var(--grid-size)}' +
-    '.cu-home-top{display:flex;justify-content:center;padding:56px 24px 0}' +
-    '.cu-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:560px;padding:40px 24px}' +
+    '.cu-home-top{position:absolute;left:50%;top:11.5%;transform:translateX(-50%);text-align:center;z-index:5}' +
+    '.cu-stage{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:780px;padding:60px 24px 0}' +
     '.cu-figures{display:flex;align-items:center;justify-content:center;gap:min(120px,7vw);max-width:1400px;width:100%;flex-wrap:wrap}' +
     '.cu-fig{position:relative;display:block;transition:transform 380ms cubic-bezier(.34,1.56,.64,1),filter 380ms ease}' +
     '.cu-fig img{display:block;position:relative;z-index:2;pointer-events:none;-webkit-user-drag:none}' +
@@ -162,8 +164,8 @@
     '@media(max-width:760px){.cu-figures{gap:14vw 8vw}.cu-stage{min-height:420px}}' +
 
     /* ---------- ABOUT (sahte AI sohbet sayfasi) ---------- */
-    '.cu-about-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px}' +
-    '.cu-chat{width:min(560px,92vw);height:min(680px,86vh);background:#161616;border:1px solid rgba(255,255,255,.14);border-radius:18px;' +
+    '.cu-about-wrap{flex:1;background:#0a0a0a;display:flex;align-items:center;justify-content:center;padding:24px;min-height:100vh}' +
+    '.cu-chat{width:36.4vw;height:87vh;min-width:340px;min-height:480px;max-width:90vw;max-height:94vh;background:#161616;border:1px solid rgba(255,255,255,.14);border-radius:18px;' +
     'overflow:hidden;display:flex;flex-direction:column;color:#fff}' +
     '.cu-chat-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.1);font-size:13px;opacity:.7}' +
     '.cu-dot{width:11px;height:11px;border-radius:50%;display:inline-block}' +
@@ -247,14 +249,14 @@
     '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}}' +
 
     /* ---------- legal sayfalari ---------- */
-    '.cu-legal-wrap{max-width:1280px;width:100%;margin:0 auto;padding:0 24px 80px}' +
-    '.cu-legal{max-width:680px;margin:0 auto;line-height:1.7;font-size:14px}' +
-    '.cu-legal h1{font-family:var(--disp);font-size:38px;letter-spacing:.5px;margin-bottom:6px}' +
-    '.cu-legal .upd{color:var(--dim);font-size:11px;margin-bottom:34px;letter-spacing:.08em}' +
-    '.cu-legal h2{font-family:var(--disp);font-size:19px;letter-spacing:.5px;margin:32px 0 10px}' +
-    '.cu-legal p{margin-bottom:12px;opacity:.85}' +
-    '.cu-legal ul{margin:0 0 12px 20px;opacity:.85}' +
-    '.cu-legal li{margin-bottom:5px}' +
+    '.cu-legal-wrap{width:100%;margin:0 auto;padding:0 40px 60px}' +
+    '.cu-legal{max-width:720px;margin:0 auto;padding:20px 0 40px;font-family:Arial,sans-serif;letter-spacing:0;line-height:1.7;font-size:15px}' +
+    '.cu-legal h1{font-family:var(--disp);font-size:42px;letter-spacing:.5px;margin-bottom:6px}' +
+    '.cu-legal .upd{opacity:.5;font-size:13px;margin-bottom:40px}' +
+    '.cu-legal h2{font-family:var(--disp);font-size:22px;letter-spacing:.5px;margin:40px 0 12px}' +
+    '.cu-legal p{margin-bottom:14px;opacity:.85}' +
+    '.cu-legal ul{margin:0 0 14px 20px;opacity:.85}' +
+    '.cu-legal li{margin-bottom:6px}' +
     '.cu-legal a{text-decoration:underline}';
 
   /* ---------- URUN SAYFASI SKIN (Ikas DOM'u Slawn'a giydirir) — DEGISMEDI ---------- */
@@ -588,7 +590,7 @@
           '</div>' +
         '</div>' +
         '<div class="cu-marquee"><div class="cu-marquee-track" id="cuMarqueeTrack"></div></div>' +
-      '</div>' + FOOT()
+      '</div>'
     );
   }
 
@@ -1032,6 +1034,7 @@
     var t = document.getElementById("cural-skintop");
     if (t) t.parentNode.removeChild(t);
     document.documentElement.classList.remove("cural-skin");
+    document.documentElement.classList.remove("cural-skin-product");
     document.documentElement.style.overflow = "";
   }
 
@@ -1387,6 +1390,7 @@
 
     if (page === "product" || page === "cart" || page === "checkout") {
       document.documentElement.classList.add("cural-skin");
+      document.documentElement.classList.toggle("cural-skin-product", page === "product");
       if (page !== "checkout") injectSkinTop();
       scheduleCartBadgeSync();
       if (page === "product") { scheduleStockBadge(); scheduleSpin360(); }
