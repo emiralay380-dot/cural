@@ -61,7 +61,7 @@
 
   /* ---------- CSS (temel + gate/home/about/store/contact/legal) ---------- */
   var CSS =
-    ':root{--ink:#0a0a0a;--paper:#fff;--dim:#9a9a9a;--line:#e8e8e8;--stone:#f3f2f0;--mono:"Courier New",ui-monospace,monospace;--disp:"Bebas Neue","Arial Narrow",sans-serif}' +
+    ':root{--ink:#0a0a0a;--paper:#fff;--dim:#9a9a9a;--line:#e8e8e8;--stone:#f3f2f0;--mono:"Courier New",ui-monospace,monospace;--disp:"Bebas Neue","Arial Narrow",sans-serif;--marker:"Permanent Marker","Bebas Neue",cursive;--grid-line:rgba(0,0,0,.094);--grid-size:25px}' +
     ':where(#cural-root *){margin:0;padding:0;box-sizing:border-box}' +
     '#cural-root{position:fixed;inset:0;z-index:999999;background:var(--paper);color:var(--ink);' +
     'font-family:var(--mono);-webkit-font-smoothing:antialiased;overflow-y:auto;display:flex;flex-direction:column;min-height:100%}' +
@@ -103,7 +103,9 @@
     '.cu-pwmsg.err{color:#c0392b}.cu-pwmsg.ok{color:var(--ink)}' +
 
     /* ---------- ANA SAYFA: figur sahnesi + hover fizigi + marquee ---------- */
-    '.cu-home{flex:1;display:flex;flex-direction:column;min-height:100%}' +
+    '.cu-home{flex:1;display:flex;flex-direction:column;min-height:100%;' +
+      'background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);' +
+      'background-size:var(--grid-size) var(--grid-size)}' +
     '.cu-home-top{display:flex;justify-content:center;padding:56px 24px 0}' +
     '.cu-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:560px;padding:40px 24px}' +
     '.cu-figures{display:flex;align-items:center;justify-content:center;gap:min(120px,7vw);max-width:1400px;width:100%;flex-wrap:wrap}' +
@@ -149,10 +151,13 @@
     '.cu-tape.cu-tape--out{opacity:0;transform:scale(.6) rotate(var(--rot,0deg)) translateY(-16px)}' +
     '.cu-tape-label{background:#fff;color:#111;font-family:var(--disp);font-weight:700;font-size:14px;letter-spacing:2px;padding:2px 10px;border-radius:3px;white-space:nowrap}' +
     /* marquee */
-    '.cu-marquee{border-top:1px solid var(--line);overflow:hidden;height:80px;display:flex;align-items:center;white-space:nowrap}' +
-    '.cu-marquee-track{display:inline-block;animation:cuScroll 22s linear infinite}' +
+    '.cu-marquee{border-top:1px solid var(--line);overflow:hidden;height:96px;display:flex;align-items:center;white-space:nowrap}' +
+    '.cu-marquee-track{display:inline-block;animation:cuScroll 24s linear infinite}' +
     '.cu-marquee:hover .cu-marquee-track{animation-play-state:paused}' +
-    '.cu-marquee-track span{display:inline-flex;align-items:center;gap:12px;margin:0 32px;font-family:var(--disp);font-size:30px;letter-spacing:.5px;opacity:.85}' +
+    '.cu-marquee-track a{display:inline-flex;align-items:center;gap:14px;margin:0 36px;font-family:var(--marker);font-size:34px;letter-spacing:.5px;opacity:.85;transition:opacity .15s ease;color:inherit;text-decoration:none}' +
+    '.cu-marquee-track a:hover{opacity:1}' +
+    '.cu-marquee-icon{display:inline-flex;width:28px;height:28px}' +
+    '.cu-marquee-icon svg{width:100%;height:100%}' +
     '@keyframes cuScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}' +
     '@media(max-width:760px){.cu-figures{gap:14vw 8vw}.cu-stage{min-height:420px}}' +
 
@@ -187,8 +192,18 @@
     '.cu-foot-legal{display:flex;gap:10px;flex-wrap:wrap;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}' +
     '.cu-foot-legal a:hover{color:var(--ink)}' +
 
-    /* urun/sepet sayfalari icin ust bar */
-    '.cu-skintop{display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 24px 18px;background:#fff;position:relative;z-index:10000}' +
+    /* shop-header: tum bindirme sayfalarinda + urun/sepet skin ust barinda kullanilan ortak baslik */
+    '.cu-shop-header{display:flex;align-items:center;justify-content:space-between;max-width:1320px;margin:0 auto;padding:27px 24px 0;min-height:100px}' +
+    '.cu-shop-brand{font-size:26px;display:flex;align-items:center;gap:12px}' +
+    '.cu-shop-brand-icon{height:68px;width:auto;object-fit:contain}' +
+    '.cu-shop-brand-wordmark{height:56px;width:auto;object-fit:contain}' +
+    '.cu-shop-header-icons{display:flex;align-items:center;gap:22px}' +
+    '.cu-header-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;opacity:.8;transition:opacity .15s ease;position:relative}' +
+    '.cu-header-icon img{width:100%;height:100%;object-fit:contain}' +
+    '.cu-header-icon:hover{opacity:1}' +
+    '.cu-header-icon .cu-cart-badge{position:absolute;top:-6px;right:-6px}' +
+    /* urun/sepet sayfalari icin ust bar (gercek Ikas DOM'u ustune biner) */
+    '.cu-skintop{background:#fff;position:relative;z-index:10000}' +
     '.cu-skintop a{text-decoration:none}' +
 
     /* contact formu */
@@ -292,7 +307,28 @@
     '--checkout-secondary-button-border-color:#0a0a0a!important;--checkout-primary-bg-color:#fff!important;' +
     '--checkout-primary-text-color:#0a0a0a!important;--checkout-secondary-bg-color:#fff!important;' +
     '--checkout-secondary-text-color:#0a0a0a!important;--checkout-card-bg-color:#fff!important;' +
-    '--checkout-border-color:#e8e8e8!important}';
+    '--checkout-border-color:#e8e8e8!important}' +
+    /* urun sayfasi tipografisi: lokal prototipte kullanilan Helvetica/Geist gorunumu (mono basligi ezer) */
+    'html.cural-skin .product-name{' +
+      'font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-weight:400!important;' +
+      'text-transform:none!important;font-size:48px!important;letter-spacing:.72px!important;line-height:1.3!important}' +
+    'html.cural-skin .price-main{' +
+      'font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:21.6px!important;letter-spacing:1.56px!important}' +
+    'html.cural-skin .add-to-cart{' +
+      'font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;border-radius:30px!important;' +
+      'width:100%!important;padding:16px!important;font-size:18px!important;letter-spacing:1.2px!important;text-transform:none!important}' +
+    'html.cural-skin .product-detail-page-buy-box .add-to-cart{flex:1 1 auto!important}' +
+    /* cu-cart-outline-wrap: gercek Sepete Ekle butonunun etrafina JS ile eklenen sarmalayici (el cizimi kontur icin) */
+    '.cu-cart-outline-wrap{position:relative;margin-top:18px}' +
+    '.cu-cart-outline-wrap .cu-outline{inset:-26px;width:calc(100% + 52px);height:calc(100% + 52px);opacity:0}' +
+    '.cu-cart-outline-wrap:hover .cu-outline{opacity:1}' +
+    /* JS ile eklenen vergi satiri, alt baslik ve adet secici (gercek urun sayfasinda) */
+    '.cu-tax-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:13px!important;opacity:.5;margin-top:4px}' +
+    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}' +
+    '.cu-qty{display:inline-flex;align-items:center;gap:18px;border:1px solid rgba(0,0,0,.15);border-radius:30px;padding:8px 18px;margin:28px 0 0;' +
+      'font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif}' +
+    '.cu-qty button{background:none;border:none;font-size:18px;color:inherit;cursor:pointer;line-height:1;padding:0}' +
+    '.cu-qty span{min-width:16px;text-align:center}';
 
   /* ---------- LEGAL METINLERI ---------- */
   var LEGAL = {
@@ -475,6 +511,25 @@
   };
   var LEGAL_ROUTES = { "/kvkk": "kvkk", "/gizlilik-politikasi": "gizlilik", "/kullanim-kosullari": "kosullar", "/iade-politikasi": "iade" };
 
+  function shopHeaderHTML() {
+    return (
+      '<div class="cu-shop-header">' +
+        '<a href="/" class="cu-shop-brand">' +
+          '<img src="' + IMGBASE + 'home/burna.webp" alt="" class="cu-shop-brand-icon">' +
+          '<img src="' + IMGBASE + 'shop/shop-logo.webp" alt="CURAL. SHOP" class="cu-shop-brand-wordmark">' +
+        '</a>' +
+        '<div class="cu-shop-header-icons">' +
+          '<a href="/" class="cu-header-icon" aria-label="Ana sayfa" title="Ana sayfa">' +
+            '<img src="' + IMGBASE + 'shop/home-icon.webp" alt="Ana sayfa">' +
+          '</a>' +
+          '<a href="/cart" class="cu-header-icon" aria-label="Sepet">' +
+            '<img src="' + IMGBASE + 'shop/cart-icon.webp" alt="Sepet">' +
+            '<span class="cu-cart-badge">0</span>' +
+          '</a>' +
+        '</div>' +
+      '</div>'
+    );
+  }
   function legalFooterLinks() {
     return '<a href="/kvkk">KVKK</a><a href="/gizlilik-politikasi">Gizlilik Politikası</a>' +
       '<a href="/kullanim-kosullari">Kullanım Koşulları</a><a href="/iade-politikasi">İade Politikası</a>';
@@ -570,7 +625,7 @@
       total: 50, special: 5, soldCount: 0, size: "25 CM",
       img: IMG + "fb562a81-d46b-419c-8d41-0597a58d067c/720/chatgpt-image-14-tem-2026-20-37-56.webp" },
     { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 50 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
-      total: 50, special: 5, soldCount: 0, size: "25 CM",
+      total: 50, special: 5, soldCount: 0, size: "25 CM", sub: "(Tütsülük)",
       img: IMG + "d3b61a8a-787e-4e21-b4dc-e1b5f8571453/720/chatgpt-image-14-tem-2026-20-43-56.webp" },
     { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
       total: null, special: 0,
@@ -643,9 +698,7 @@
       );
     }).join("");
     return (
-      '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a>' +
-        '<a class="cu-cart" href="/cart">Sepet <span class="cu-cart-badge">0</span></a>' +
-      '</div>' +
+      shopHeaderHTML() +
       '<div class="cu-coll-wrap"><div class="cu-coll"><h1>' + title + '</h1><span>Drop 001 — ' + list.length + ' parça</span></div></div>' +
       '<div class="cu-store">' +
         '<nav class="cu-side">' +
@@ -661,9 +714,7 @@
 
   function contactHTML() {
     return (
-      '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a>' +
-        '<a class="cu-cart" href="/cart">Sepet <span class="cu-cart-badge">0</span></a>' +
-      '</div>' +
+      shopHeaderHTML() +
       '<div class="cu-coll-wrap"><div class="cu-coll"><h1>Contact</h1><span>Yanıt için 3-5 iş günü</span></div></div>' +
       '<div class="cu-store">' +
         '<nav class="cu-side">' +
@@ -703,9 +754,7 @@
     var d = LEGAL[key];
     if (!d) return "";
     return (
-      '<div class="cu-top"><a href="/">' + logoSVG("140px") + '</a>' +
-        '<a class="cu-cart" href="/cart">Sepet <span class="cu-cart-badge">0</span></a>' +
-      '</div>' +
+      shopHeaderHTML() +
       '<div class="cu-legal-wrap"><div class="cu-legal">' +
         '<h1>' + d.title + '</h1><div class="upd">Son güncelleme: ' + d.updated + '</div>' +
         d.body +
@@ -809,14 +858,29 @@
   }
 
   /* ---------- DAVRANIS: ana sayfa (marquee + kapali bandi sakasi) ---------- */
-  var MARQUEE_ITEMS = ["CURAL.", "@curalco", "CURAL.", "STONE MARKET", "CURAL.", "FLAME MARKET"];
+  var MARQUEE_ICONS = {
+    instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3.3 h8 a4.7 4.7 0 0 1 4.7 4.7 v8 a4.7 4.7 0 0 1 -4.7 4.7 h-8 a4.7 4.7 0 0 1 -4.7 -4.7 v-8 a4.7 4.7 0 0 1 4.7 -4.7 Z"/><circle cx="12" cy="12" r="3.6"/><circle cx="17.3" cy="6.6" r="0.9" fill="currentColor" stroke="none"/></svg>',
+    tiktok: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3 v11.6 a3.4 3.4 0 1 1 -2.9 -3.4"/><path d="M13.5 3.2 c0.6 2.6 2.3 4.2 4.8 4.4"/></svg>',
+    youtube: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.3 8.6 c0.2 -2 0.9 -2.7 2.9 -2.9 c2.9 -0.3 8.6 -0.3 11.5 0 c2 0.2 2.7 0.9 2.9 2.9 c0.3 2.3 0.3 4.5 0 6.8 c-0.2 2 -0.9 2.7 -2.9 2.9 c-2.9 0.3 -8.6 0.3 -11.5 0 c-2 -0.2 -2.7 -0.9 -2.9 -2.9 c-0.3 -2.3 -0.3 -4.5 0 -6.8 Z"/><path d="M10.2 9.3 l4.6 2.7 l-4.6 2.7 Z" fill="currentColor" stroke="currentColor" stroke-linejoin="round"/></svg>',
+    threads: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.3 c-5 0 -7.8 3.3 -7.8 8.7 c0 5.4 2.8 8.7 7.8 8.7 c4.3 0 6.9 -2.2 6.9 -5 c0 -2.6 -2.1 -3.9 -4.6 -3.9 c-2.8 0 -4.4 1.3 -4.4 3.1 c0 1.4 1.1 2.3 2.6 2.3 c1.8 0 2.9 -1.3 3 -3.6 c0.1 -2.6 -0.9 -5.5 -3.6 -5.5 c-1.5 0 -2.6 0.6 -3.4 1.6"/></svg>'
+  };
+  var MARQUEE_ITEMS = [
+    { label: "INSTAGRAM", url: CONFIG.IG, icon: MARQUEE_ICONS.instagram },
+    { label: "TIKTOK", url: "https://www.tiktok.com/@curalco", icon: MARQUEE_ICONS.tiktok },
+    { label: "YOUTUBE", url: "https://www.youtube.com/@curalco", icon: MARQUEE_ICONS.youtube },
+    { label: "THREADS", url: "https://www.threads.com/@curalco?xmt=AQG0WGX56moxRjVXTsr7p1jsEql6CHLO2XtO9uSdC5_ZVII", icon: MARQUEE_ICONS.threads },
+    { label: "CURAL.", url: "/", icon: null }
+  ];
   function wireHome(root) {
     var track = root.querySelector("#cuMarqueeTrack");
     if (track) {
       var html = "";
       for (var pass = 0; pass < 2; pass++) {
         for (var i = 0; i < MARQUEE_ITEMS.length; i++) {
-          html += '<span>' + (MARQUEE_ITEMS[i] === "@curalco" ? IG_SVG : "") + MARQUEE_ITEMS[i] + '</span>';
+          var item = MARQUEE_ITEMS[i];
+          var target = item.url.indexOf("http") === 0 ? "_blank" : "_self";
+          var iconHtml = item.icon ? '<span class="cu-marquee-icon">' + item.icon + '</span>' : "";
+          html += '<a href="' + item.url + '" target="' + target + '" rel="noopener">' + iconHtml + item.label + '</a>';
         }
       }
       track.innerHTML = html;
@@ -943,6 +1007,14 @@
     st.id = "cural-style";
     st.textContent = CSS + SKIN_CSS;
     document.head.appendChild(st);
+    // Marquee'de kullanilan el yazisi font (Bebas Neue tema tarafindan zaten yukleniyor, bu ek)
+    if (!document.getElementById("cural-font-marker")) {
+      var lk = document.createElement("link");
+      lk.id = "cural-font-marker";
+      lk.rel = "stylesheet";
+      lk.href = "https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap";
+      document.head.appendChild(lk);
+    }
   }
 
   function cleanup() {
@@ -958,7 +1030,7 @@
     var bar = document.createElement("div");
     bar.id = "cural-skintop";
     bar.className = "cu-skintop";
-    bar.innerHTML = '<a href="/">' + logoSVG("110px") + '</a><a class="cu-cart" href="/cart">Sepet <span class="cu-cart-badge">0</span></a>';
+    bar.innerHTML = shopHeaderHTML();
     document.body.insertBefore(bar, document.body.firstChild);
   }
 
@@ -981,6 +1053,9 @@
     removeStockBadges();
     var p = currentProduct();
     injectSizeLabel(p);
+    injectSubtitle(p);
+    injectTaxLine(p);
+    injectQtyAndCartOutline(p);
     if (!p || !p.total) return;
     var anchor = document.querySelector(".product-detail-page-buy-box") || document.querySelector(".add-to-cart");
     if (!anchor || !anchor.parentNode) return;
@@ -994,6 +1069,69 @@
       badge.textContent = p.special + " TANESİ AYRI DÖKÜLDÜ. BİRİ SENDE OLABİLİR.";
       anchor.parentNode.insertBefore(badge, anchor.nextSibling);
     }
+  }
+
+  // Urun basligi altina lokal prototipteki alt baslik satiri eklenir (orn. BURNA. -> "(Tutsulukk)")
+  function injectSubtitle(p) {
+    if (!p || !p.sub) return;
+    var nameEl = document.querySelector(".product-name");
+    if (!nameEl || !nameEl.parentNode) return;
+    var sizeLabel = document.querySelector(".cu-size-label");
+    var el = document.createElement("div");
+    el.className = "cu-sub-line";
+    el.textContent = p.sub;
+    nameEl.parentNode.insertBefore(el, (sizeLabel ? sizeLabel.nextSibling : nameEl.nextSibling));
+  }
+
+  // Fiyatin altina "KDV dahil." satiri eklenir (lokal prototipteki .product-detail-tax)
+  function injectTaxLine() {
+    var priceEl = document.querySelector(".price-main");
+    if (!priceEl || !priceEl.parentNode || document.querySelector(".cu-tax-line")) return;
+    var el = document.createElement("div");
+    el.className = "cu-tax-line";
+    el.textContent = "KDV dahil.";
+    priceEl.parentNode.insertBefore(el, priceEl.nextSibling);
+  }
+
+  // Gercek "Sepete Ekle" butonunun etrafina: adet secici (+/-) + el cizimi kontur sarmalayici eklenir.
+  // Buton TASINMAZ silinmez — ayni node, event listener'lari korunur, sadece bir wrapper icine alinir.
+  var productQty = 1;
+  var MAX_QTY = 10;
+  function updateQtyDisplay() {
+    var el = document.querySelector(".cu-qty-value");
+    if (el) el.textContent = productQty;
+  }
+  function injectQtyAndCartOutline(p) {
+    var btn = document.querySelector(".add-to-cart");
+    if (!btn || btn.closest(".cu-cart-outline-wrap")) return; // zaten kuruldu
+
+    productQty = 1;
+
+    // adet secici (+/-)
+    var qty = document.createElement("div");
+    qty.className = "cu-qty";
+    qty.innerHTML =
+      '<button type="button" class="cu-qty-minus" aria-label="Azalt">−</button>' +
+      '<span class="cu-qty-value">1</span>' +
+      '<button type="button" class="cu-qty-plus" aria-label="Artır">+</button>';
+    var anchor = document.querySelector(".product-detail-page-buy-box") || btn.parentNode;
+    anchor.parentNode.insertBefore(qty, anchor);
+    qty.querySelector(".cu-qty-minus").addEventListener("click", function () {
+      productQty = Math.max(1, productQty - 1);
+      updateQtyDisplay();
+    });
+    qty.querySelector(".cu-qty-plus").addEventListener("click", function () {
+      productQty = Math.min(MAX_QTY, productQty + 1);
+      updateQtyDisplay();
+    });
+
+    // el cizimi kontur sarmalayici: buton yerinde kalir, sadece bir wrapper'a tasinir
+    var wrap = document.createElement("div");
+    wrap.className = "cu-cart-outline-wrap";
+    wrap.innerHTML = '<svg class="cu-outline cu-outline--orange" viewBox="0 0 100 100" preserveAspectRatio="none">' +
+      '<path fill="none" stroke="#ef3b0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    btn.parentNode.insertBefore(wrap, btn);
+    wrap.appendChild(btn);
   }
 
   /* ---------- 360 SPIN VIEWER (BORİS. + BURNA., 36 kare, autoplay + surukle) ---------- */
@@ -1173,6 +1311,11 @@
       })(badges[i]);
     }
   }
+  // productQty > 1 iken: ilk (gercek, kullanicinin bastigi) tiklama Ikas'in kendi ekleme islemini
+  // normal sekilde yapar; ardindan ayni gercek butona kalan adet kadar daha GERCEK click() gonderilir
+  // (Ikas'in kendi mantigi her birini ayri ayri isler). qtyExpanding bayragi bu ek tiklamalarin
+  // tekrar cogalmasini (sonsuz dongu) engeller.
+  var qtyExpanding = false;
   document.addEventListener("click", function (e) {
     var btn = e.target && e.target.closest && e.target.closest(".add-to-cart");
     if (!btn) return;
@@ -1181,6 +1324,22 @@
     try { localStorage.setItem(CART_QTY_KEY, String(cur + 1)); } catch (err) {}
     scheduleCartBadgeSync();
     showAddToCartToast();
+
+    if (!qtyExpanding && productQty > 1) {
+      var remaining = productQty - 1;
+      productQty = 1;
+      updateQtyDisplay();
+      qtyExpanding = true;
+      var i = 0;
+      (function fireNext() {
+        if (i >= remaining) { qtyExpanding = false; return; }
+        i++;
+        setTimeout(function () {
+          btn.click();
+          fireNext();
+        }, 350);
+      })();
+    }
   }, true);
   var cartBadgeScheduled = false;
   function scheduleCartBadgeSync() {
