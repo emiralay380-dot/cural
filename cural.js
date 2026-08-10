@@ -612,7 +612,10 @@
       img: IMGBASE + "shop/product-burna.webp" },
     { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
       total: null, special: 0,
-      img: IMG + "9d914837-db93-4790-a639-e06479e932a1/720/chatgpt-image-12-haz-2026-04-51-32.jpg" }
+      img: IMG + "9d914837-db93-4790-a639-e06479e932a1/720/chatgpt-image-12-haz-2026-04-51-32.jpg" },
+    { coll: "stone", url: "/orumcekadam",       nm: "ÖRÜMCEKADAM", ty: "Tablo — 50x70",        pr: "7.000 TL", st: "Stokta", sold: false,
+      total: null, special: 0,
+      img: IMG + "da3ac119-1362-4436-a0fb-cc416a2564f7/720/cural-x-spiderman.jpg" }
   ];
 
   function currentProduct() {
