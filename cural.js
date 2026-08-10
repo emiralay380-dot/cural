@@ -617,12 +617,12 @@
   var IMG = "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/";
   var PRODUCTS = [
     { coll: "stone", url: "/boris",             nm: "BORİS.", ty: "Taş tozu figür — 50 adet", pr: "3.000 TL", st: "Stokta", sold: false,
-      total: 50, special: 5, soldCount: 0, size: "25 CM",
-      img: IMG + "fb562a81-d46b-419c-8d41-0597a58d067c/720/chatgpt-image-14-tem-2026-20-37-56.webp",
-      hoverImg: IMGBASE + "spin360/boris/frame_009.webp" },
+      total: 50, special: 5, soldCount: 0, size: "25 CM", staticImg: true,
+      img: IMGBASE + "shop/product-boris.webp",
+      hoverImg: IMGBASE + "shop/product-boris-hover.webp" },
     { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 50 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
-      total: 50, special: 5, soldCount: 0, size: "25 CM", sub: "(Tütsülük)",
-      img: IMG + "d3b61a8a-787e-4e21-b4dc-e1b5f8571453/720/chatgpt-image-14-tem-2026-20-43-56.webp" },
+      total: 50, special: 5, soldCount: 0, size: "25 CM", sub: "(Tütsülük)", staticImg: true,
+      img: IMGBASE + "shop/product-burna.webp" },
     { coll: "flame", url: "/boris-pocket-idol", nm: "Çakmak", ty: "BORİS. Pocket Idol",        pr: "150 TL",   st: "Stokta", sold: false,
       total: null, special: 0,
       img: IMG + "9d914837-db93-4790-a639-e06479e932a1/720/chatgpt-image-12-haz-2026-04-51-32.jpg" }
@@ -683,7 +683,7 @@
     var cards = list.map(function (p) {
       return (
         '<a class="cu-card" href="' + p.url + '">' +
-          '<div class="cu-ph' + (p.sold ? " sold" : "") + '" data-purl="' + p.url + '" data-nm="' + p.nm + '"' +
+          '<div class="cu-ph' + (p.sold ? " sold" : "") + '"' + (p.staticImg ? '' : ' data-purl="' + p.url + '"') + ' data-nm="' + p.nm + '"' +
             (p.hoverImg ? ' data-hover="' + p.hoverImg + '"' : '') + '>' +
             (p.img ? '<img src="' + p.img + '" alt="' + p.nm + '" loading="eager" fetchpriority="high" data-default="' + p.img + '">' : '<span>' + p.nm + '</span>') +
           '</div>' +
