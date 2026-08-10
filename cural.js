@@ -555,7 +555,7 @@
   function homeHTML() {
     return (
       '<div class="cu-home">' +
-        '<div class="cu-home-top cu-rise">' + logoSVG("min(220px,50vw)") + '</div>' +
+        '<div class="cu-home-top"><div class="cu-rise">' + logoSVG("min(220px,50vw)") + '</div></div>' +
         '<div class="cu-stage">' +
           '<div class="cu-figures">' +
             '<a href="/about" class="cu-fig cu-fig--blue">' +
