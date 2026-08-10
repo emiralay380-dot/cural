@@ -235,20 +235,13 @@
     '.cu-side a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;align-self:flex-start}' +
     '.cu-side a:hover{color:var(--ink)}' +
     '.cu-side a.active{color:var(--ink);border-color:var(--ink)}' +
-    '.cu-grid{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}' +
+    /* lokal prototipteki gibi sade, tamamen gorsel grid — isim/fiyat metni yok, sadece resim */
+    '.cu-grid{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1320px}' +
     '.cu-card{display:block;position:relative}' +
-    '.cu-ph{aspect-ratio:4/5;background:var(--paper);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}' +
-    '.cu-ph img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .5s ease,opacity .2s}' +
-    '.cu-card:hover .cu-ph img{transform:scale(1.045)}' +
+    '.cu-ph{aspect-ratio:1/1;background:var(--paper);display:flex;align-items:center;justify-content:center;position:relative;overflow:visible}' +
+    '.cu-ph img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}' +
     '.cu-ph.sold img{opacity:.5}' +
     '.cu-ph.sold::before{content:"Sold out";position:absolute;top:10px;left:10px;background:var(--ink);color:var(--paper);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:5px 9px;z-index:2}' +
-    '.cu-ph span{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);transition:opacity .2s}' +
-    '.cu-meta{padding:12px 2px 0;display:flex;flex-direction:column;gap:4px;opacity:0;transform:translateY(-3px);transition:opacity .2s,transform .2s}' +
-    '.cu-card:hover .cu-meta{opacity:1;transform:none}' +
-    '.cu-meta .nm{font-size:13px;letter-spacing:.06em;font-weight:700}' +
-    '.cu-meta .ty{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}' +
-    '.cu-meta .rw{display:flex;justify-content:space-between;align-items:baseline;margin-top:4px}' +
-    '.cu-meta .pr{font-size:12px}.cu-meta .st{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}' +
     '@media(max-width:760px){.cu-store{flex-direction:column;gap:24px}.cu-side{flex-direction:row;flex-wrap:wrap;width:100%;position:static;gap:14px 22px}.cu-grid{grid-template-columns:repeat(2,1fr)}}' +
     '@media(max-width:600px){.cu-menu{gap:12px;margin-bottom:42px}.cu-menu a{font-size:11px;letter-spacing:.24em}}' +
     '@media(max-width:460px){.cu-grid{grid-template-columns:1fr}}' +
@@ -514,7 +507,7 @@
   function shopHeaderHTML() {
     return (
       '<div class="cu-shop-header">' +
-        '<a href="/" class="cu-shop-brand">' +
+        '<a href="/stone-market" class="cu-shop-brand">' +
           '<img src="' + IMGBASE + 'home/burna.webp" alt="" class="cu-shop-brand-icon">' +
           '<img src="' + IMGBASE + 'shop/shop-logo.webp" alt="CURAL. SHOP" class="cu-shop-brand-wordmark">' +
         '</a>' +
@@ -623,7 +616,8 @@
   var PRODUCTS = [
     { coll: "stone", url: "/boris",             nm: "BORİS.", ty: "Taş tozu figür — 50 adet", pr: "3.000 TL", st: "Stokta", sold: false,
       total: 50, special: 5, soldCount: 0, size: "25 CM",
-      img: IMG + "fb562a81-d46b-419c-8d41-0597a58d067c/720/chatgpt-image-14-tem-2026-20-37-56.webp" },
+      img: IMG + "fb562a81-d46b-419c-8d41-0597a58d067c/720/chatgpt-image-14-tem-2026-20-37-56.webp",
+      hoverImg: IMGBASE + "spin360/boris/frame_009.webp" },
     { coll: "stone", url: "/burna",             nm: "BURNA.", ty: "Tütsülük — 50 adet",        pr: "3.000 TL", st: "Stokta", sold: false,
       total: 50, special: 5, soldCount: 0, size: "25 CM", sub: "(Tütsülük)",
       img: IMG + "d3b61a8a-787e-4e21-b4dc-e1b5f8571453/720/chatgpt-image-14-tem-2026-20-43-56.webp" },
@@ -675,7 +669,7 @@
             if (span) span.remove();
             el.insertBefore(img, el.firstChild);
           }
-          if (img.src !== imgUrl) img.src = imgUrl;
+          if (img.src !== imgUrl) { img.src = imgUrl; img.setAttribute("data-default", imgUrl); }
         });
       })(els[i]);
     }
@@ -687,13 +681,10 @@
     var cards = list.map(function (p) {
       return (
         '<a class="cu-card" href="' + p.url + '">' +
-          '<div class="cu-ph' + (p.sold ? " sold" : "") + '" data-purl="' + p.url + '" data-nm="' + p.nm + '">' +
-            (p.img ? '<img src="' + p.img + '" alt="' + p.nm + '" loading="eager" fetchpriority="high">' : '<span>' + p.nm + '</span>') +
+          '<div class="cu-ph' + (p.sold ? " sold" : "") + '" data-purl="' + p.url + '" data-nm="' + p.nm + '"' +
+            (p.hoverImg ? ' data-hover="' + p.hoverImg + '"' : '') + '>' +
+            (p.img ? '<img src="' + p.img + '" alt="' + p.nm + '" loading="eager" fetchpriority="high" data-default="' + p.img + '">' : '<span>' + p.nm + '</span>') +
           '</div>' +
-          '<div class="cu-meta"><div class="nm">' + p.nm + '</div>' +
-          '<div class="ty">' + p.ty + '</div>' +
-          '<div class="rw"><span class="pr">' + p.pr + '</span>' +
-          '<span class="st">' + (p.sold ? "Sold out" : p.st) + '</span></div></div>' +
         '</a>'
       );
     }).join("");
@@ -710,6 +701,24 @@
         '<div class="cu-grid">' + cards + '</div>' +
       '</div>' + FOOT()
     );
+  }
+
+  // BORİS. karti gibi hover-alternatif-goruntu tanimlanmis kartlarda mouseenter/leave ile resim degisir
+  function wireStoreHover(root) {
+    var cards = root.querySelectorAll(".cu-ph[data-hover]");
+    for (var i = 0; i < cards.length; i++) {
+      (function (card) {
+        var hoverSrc = card.getAttribute("data-hover");
+        card.addEventListener("mouseenter", function () {
+          var img = card.querySelector("img");
+          if (img) img.src = hoverSrc;
+        });
+        card.addEventListener("mouseleave", function () {
+          var img = card.querySelector("img");
+          if (img) img.src = img.getAttribute("data-default");
+        });
+      })(cards[i]);
+    }
   }
 
   function contactHTML() {
@@ -1406,7 +1415,7 @@
     if (page === "home") wireHome(root);
     if (page === "about") wireAbout(root);
     if (page === "contact") wireContact(root);
-    if (page === "store") refreshProductImages(root);
+    if (page === "store") { refreshProductImages(root); wireStoreHover(root); }
   }
 
   function hookSPA() {
