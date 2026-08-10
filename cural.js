@@ -195,7 +195,7 @@
     '.cu-foot-legal a:hover{color:var(--ink)}' +
 
     /* shop-header: tum bindirme sayfalarinda + urun/sepet skin ust barinda kullanilan ortak baslik */
-    '.cu-shop-header{display:flex;align-items:center;justify-content:space-between;max-width:1320px;margin:0 auto;padding:27px 24px 0;min-height:100px}' +
+    '.cu-shop-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1320px;margin:0 auto;padding:27px 24px 0;min-height:100px;box-sizing:border-box}' +
     '.cu-shop-brand{font-size:26px;display:flex;align-items:center;gap:12px}' +
     '.cu-shop-brand-icon{height:68px;width:auto;object-fit:contain}' +
     '.cu-shop-brand-wordmark{height:56px;width:auto;object-fit:contain}' +
