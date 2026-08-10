@@ -308,13 +308,9 @@
     '.cu-cart-outline-wrap{position:relative;margin-top:18px}' +
     '.cu-cart-outline-wrap .cu-outline{inset:-26px;width:calc(100% + 52px);height:calc(100% + 52px);opacity:0}' +
     '.cu-cart-outline-wrap:hover .cu-outline{opacity:1}' +
-    /* JS ile eklenen vergi satiri, alt baslik ve adet secici (gercek urun sayfasinda) */
+    /* JS ile eklenen vergi satiri ve alt baslik (gercek urun sayfasinda) */
     '.cu-tax-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:13px!important;opacity:.5;margin-top:4px}' +
-    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}' +
-    '.cu-qty{display:inline-flex;align-items:center;gap:18px;border:1px solid rgba(0,0,0,.15);border-radius:30px;padding:8px 18px;margin:28px 0 0;' +
-      'font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif}' +
-    '.cu-qty button{background:none;border:none;font-size:18px;color:inherit;cursor:pointer;line-height:1;padding:0}' +
-    '.cu-qty span{min-width:16px;text-align:center}';
+    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}';
 
   /* ---------- LEGAL METINLERI ---------- */
   var LEGAL = {
@@ -1079,37 +1075,11 @@
     priceEl.parentNode.insertBefore(el, priceEl.nextSibling);
   }
 
-  // Gercek "Sepete Ekle" butonunun etrafina: adet secici (+/-) + el cizimi kontur sarmalayici eklenir.
+  // Gercek "Sepete Ekle" butonunun etrafina el cizimi kontur sarmalayici eklenir.
   // Buton TASINMAZ silinmez — ayni node, event listener'lari korunur, sadece bir wrapper icine alinir.
-  var productQty = 1;
-  var MAX_QTY = 10;
-  function updateQtyDisplay() {
-    var el = document.querySelector(".cu-qty-value");
-    if (el) el.textContent = productQty;
-  }
   function injectQtyAndCartOutline(p) {
     var btn = document.querySelector(".add-to-cart");
     if (!btn || btn.closest(".cu-cart-outline-wrap")) return; // zaten kuruldu
-
-    productQty = 1;
-
-    // adet secici (+/-)
-    var qty = document.createElement("div");
-    qty.className = "cu-qty";
-    qty.innerHTML =
-      '<button type="button" class="cu-qty-minus" aria-label="Azalt">−</button>' +
-      '<span class="cu-qty-value">1</span>' +
-      '<button type="button" class="cu-qty-plus" aria-label="Artır">+</button>';
-    var anchor = document.querySelector(".product-detail-page-buy-box") || btn.parentNode;
-    anchor.parentNode.insertBefore(qty, anchor);
-    qty.querySelector(".cu-qty-minus").addEventListener("click", function () {
-      productQty = Math.max(1, productQty - 1);
-      updateQtyDisplay();
-    });
-    qty.querySelector(".cu-qty-plus").addEventListener("click", function () {
-      productQty = Math.min(MAX_QTY, productQty + 1);
-      updateQtyDisplay();
-    });
 
     // el cizimi kontur sarmalayici: buton yerinde kalir, sadece bir wrapper'a tasinir
     var wrap = document.createElement("div");
@@ -1297,11 +1267,6 @@
       })(badges[i]);
     }
   }
-  // productQty > 1 iken: ilk (gercek, kullanicinin bastigi) tiklama Ikas'in kendi ekleme islemini
-  // normal sekilde yapar; ardindan ayni gercek butona kalan adet kadar daha GERCEK click() gonderilir
-  // (Ikas'in kendi mantigi her birini ayri ayri isler). qtyExpanding bayragi bu ek tiklamalarin
-  // tekrar cogalmasini (sonsuz dongu) engeller.
-  var qtyExpanding = false;
   document.addEventListener("click", function (e) {
     var btn = e.target && e.target.closest && e.target.closest(".add-to-cart");
     if (!btn) return;
@@ -1310,22 +1275,6 @@
     try { localStorage.setItem(CART_QTY_KEY, String(cur + 1)); } catch (err) {}
     scheduleCartBadgeSync();
     showAddToCartToast();
-
-    if (!qtyExpanding && productQty > 1) {
-      var remaining = productQty - 1;
-      productQty = 1;
-      updateQtyDisplay();
-      qtyExpanding = true;
-      var i = 0;
-      (function fireNext() {
-        if (i >= remaining) { qtyExpanding = false; return; }
-        i++;
-        setTimeout(function () {
-          btn.click();
-          fireNext();
-        }, 350);
-      })();
-    }
   }, true);
   var cartBadgeScheduled = false;
   function scheduleCartBadgeSync() {
