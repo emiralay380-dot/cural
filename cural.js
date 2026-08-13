@@ -310,7 +310,7 @@
     '.cu-cart-outline-wrap:hover .cu-outline{opacity:1}' +
     /* JS ile eklenen vergi satiri ve alt baslik (gercek urun sayfasinda) */
     '.cu-tax-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:13px!important;opacity:.5;margin-top:4px}' +
-    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}' + 'html.cural-skin .product-detail-page-slider{height:auto!important;grid-template-rows:1fr!important} html.cural-skin .product-detail-page-slider .slick-slide,html.cural-skin .product-detail-page-slider .slick-list,html.cural-skin .product-detail-page-slider .slick-track,html.cural-skin .product-detail-page-slider .slider,html.cural-skin .product-detail-page-slider .slider-container,html.cural-skin .variant-images-large{height:100%!important}';
+    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}' + 'html.cural-skin .product-detail-page-slider .slick-slide,html.cural-skin .product-detail-page-slider .slick-list,html.cural-skin .product-detail-page-slider .slick-track,html.cural-skin .product-detail-page-slider .slick-slider-main,html.cural-skin .product-detail-page-slider .slider-container,html.cural-skin .variant-images-large{height:100%!important}';
 
   /* ---------- LEGAL METINLERI ---------- */
   var LEGAL = {
@@ -615,10 +615,10 @@
       img: IMG + "9d914837-db93-4790-a639-e06479e932a1/720/chatgpt-image-12-haz-2026-04-51-32.jpg" },
     { coll: "stone", url: "/orumcekadam",       nm: "ÖRÜMCEKADAM", ty: "Tablo — 50x70",        pr: "7.000 TL", st: "Stokta", sold: false,
       total: null, special: 0,
-      img: IMG + "da3ac119-1362-4436-a0fb-cc416a2564f7/720/cural-x-spiderman.jpg" },
+      img: IMG + "da3ac119-1362-4436-a0fb-cc416a2564f7/720/cural-x-spiderman.jpg", ar: "3/2" },
      { coll: "stone", url: "/kacis",             nm: "KAÇIŞ", ty: "Tablo — 50x70",         pr: "8.000 TL", st: "Stokta", sold: false,
             total: null, special: 0,
-            img: "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/1793ecd4-d767-4d3c-a890-91b3cfd51dc8/image_1080.webp" }
+            img: "https://cdn.myikas.com/images/c11c9e86-3ee0-4921-9b23-0440efa35815/1793ecd4-d767-4d3c-a890-91b3cfd51dc8/image_1080.webp", ar: "3/2" }
   ];
 
   function currentProduct() {
@@ -993,7 +993,7 @@
     var st = document.createElement("style");
     st.id = "cural-style";
     st.textContent = CSS + SKIN_CSS;
-    document.head.appendChild(st);
+    document.head.appendChild(st); var __p = typeof currentProduct === "function" ? currentProduct() : null; if (__p && __p.ar) { var st2 = document.createElement("style"); st2.textContent = "html.cural-skin .product-detail-page-slider{height:auto!important;aspect-ratio:" + __p.ar + "!important}"; document.head.appendChild(st2); }
     // Marquee'de kullanilan el yazisi font (Bebas Neue tema tarafindan zaten yukleniyor, bu ek)
     if (!document.getElementById("cural-font-marker")) {
       var lk = document.createElement("link");
