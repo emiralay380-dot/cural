@@ -310,7 +310,7 @@
     '.cu-cart-outline-wrap:hover .cu-outline{opacity:1}' +
     /* JS ile eklenen vergi satiri ve alt baslik (gercek urun sayfasinda) */
     '.cu-tax-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:13px!important;opacity:.5;margin-top:4px}' +
-    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}' + 'html.cural-skin .product-detail-page-slider{height:auto!important} html.cural-skin .product-detail-page-slider .slick-slide,html.cural-skin .product-detail-page-slider .slick-list,html.cural-skin .product-detail-page-slider .slick-track,html.cural-skin .product-detail-page-slider .slider,html.cural-skin .product-detail-page-slider .slider-container,html.cural-skin .variant-images-large{height:100%!important}';
+    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}' + 'html.cural-skin .product-detail-page-slider{height:auto!important;grid-template-rows:1fr!important} html.cural-skin .product-detail-page-slider .slick-slide,html.cural-skin .product-detail-page-slider .slick-list,html.cural-skin .product-detail-page-slider .slick-track,html.cural-skin .product-detail-page-slider .slider,html.cural-skin .product-detail-page-slider .slider-container,html.cural-skin .variant-images-large{height:100%!important}';
 
   /* ---------- LEGAL METINLERI ---------- */
   var LEGAL = {
@@ -1198,7 +1198,7 @@
     }, 200);
   }
 
-  function fixSliderAspect() { var slider = document.querySelector(".product-detail-page-slider"); var img = slider && slider.querySelector(".variant-images-large img"); if (!img || img.naturalWidth < 50 || img.naturalHeight < 50) return; slider.style.aspectRatio = img.naturalWidth + " / " + img.naturalHeight; } function scheduleSliderAspectFix() { var tries = 0; var timer = setInterval(function () { tries++; fixSliderAspect(); if (tries >= 30) clearInterval(timer); }, 150); } function scheduleStockBadge() {
+  function fixSliderAspect() { var slider = document.querySelector(".product-detail-page-slider"); var img = slider && slider.querySelector(".variant-images-large img"); if (!img || img.naturalWidth < 50 || img.naturalHeight < 50) return; slider.style.aspectRatio = img.naturalWidth + " / " + img.naturalHeight; window.dispatchEvent(new Event("resize")); } function scheduleSliderAspectFix() { var tries = 0; var timer = setInterval(function () { tries++; fixSliderAspect(); if (tries >= 30) clearInterval(timer); }, 150); } function scheduleStockBadge() {
     var tries = 0;
     var timer = setInterval(function () {
       tries++;
