@@ -310,7 +310,7 @@
     '.cu-cart-outline-wrap:hover .cu-outline{opacity:1}' +
     /* JS ile eklenen vergi satiri ve alt baslik (gercek urun sayfasinda) */
     '.cu-tax-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:13px!important;opacity:.5;margin-top:4px}' +
-    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}';
+    '.cu-sub-line{font-family:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:16px!important;opacity:.55;margin:-4px 0 4px}' + 'html.cural-skin .product-detail-page-slider{height:auto!important} html.cural-skin .product-detail-page-slider .slick-slide,html.cural-skin .product-detail-page-slider .slick-list,html.cural-skin .product-detail-page-slider .slick-track,html.cural-skin .product-detail-page-slider .slider,html.cural-skin .product-detail-page-slider .slider-container,html.cural-skin .variant-images-large{height:100%!important}';
 
   /* ---------- LEGAL METINLERI ---------- */
   var LEGAL = {
@@ -1198,7 +1198,7 @@
     }, 200);
   }
 
-  function scheduleStockBadge() {
+  function fixSliderAspect() { var slider = document.querySelector(".product-detail-page-slider"); var img = slider && slider.querySelector(".variant-images-large img"); if (!img) return false; function apply() { if (img.naturalWidth && img.naturalHeight) slider.style.aspectRatio = img.naturalWidth + " / " + img.naturalHeight; } if (img.complete && img.naturalWidth) { apply(); return true; } img.addEventListener("load", apply, { once: true }); return true; } function scheduleSliderAspectFix() { var tries = 0; var timer = setInterval(function () { tries++; if (fixSliderAspect() || tries >= 25) clearInterval(timer); }, 200); } function scheduleStockBadge() {
     var tries = 0;
     var timer = setInterval(function () {
       tries++;
@@ -1322,7 +1322,7 @@
       document.documentElement.classList.toggle("cural-skin-product", page === "product");
       if (page !== "checkout") injectSkinTop();
       scheduleCartBadgeSync();
-      if (page === "product") { scheduleStockBadge(); scheduleSpin360(); }
+      if (page === "product") { scheduleStockBadge(); scheduleSpin360(); scheduleSliderAspectFix(); }
       return;
     }
 
