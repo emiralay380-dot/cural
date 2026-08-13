@@ -1198,7 +1198,7 @@
     }, 200);
   }
 
-  function fixSliderAspect() { var slider = document.querySelector(".product-detail-page-slider"); var img = slider && slider.querySelector(".variant-images-large img"); if (!img) return false; function apply() { if (img.naturalWidth && img.naturalHeight) slider.style.aspectRatio = img.naturalWidth + " / " + img.naturalHeight; } if (img.complete && img.naturalWidth) { apply(); return true; } img.addEventListener("load", apply, { once: true }); return true; } function scheduleSliderAspectFix() { var tries = 0; var timer = setInterval(function () { tries++; if (fixSliderAspect() || tries >= 25) clearInterval(timer); }, 200); } function scheduleStockBadge() {
+  function fixSliderAspect() { var slider = document.querySelector(".product-detail-page-slider"); var img = slider && slider.querySelector(".variant-images-large img"); if (!img || img.naturalWidth < 50 || img.naturalHeight < 50) return; slider.style.aspectRatio = img.naturalWidth + " / " + img.naturalHeight; } function scheduleSliderAspectFix() { var tries = 0; var timer = setInterval(function () { tries++; fixSliderAspect(); if (tries >= 30) clearInterval(timer); }, 150); } function scheduleStockBadge() {
     var tries = 0;
     var timer = setInterval(function () {
       tries++;
